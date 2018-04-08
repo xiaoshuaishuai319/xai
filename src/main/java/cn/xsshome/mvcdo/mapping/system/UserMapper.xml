@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xsshome.mvcdo.dao.system.UserDao">
+
+	<select id="retrieve" resultType="cn.xsshome.mvcdo.pojo.system.UserDO">
+		select
+		userId,username,password
+		from sys_user where username = #{username} and password=#{password}
+	</select>
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.system.UserDO">
+		select userId,username,name,password,deptId,email,mobile,status,userIdCreate,gmtCreate,gmtModified,sex,birth,province,city,district from sys_user where userId = #{value}
+	</select>
+
+	<select id="selectByUserName" resultType="cn.xsshome.mvcdo.pojo.system.UserDO">
+		select userId,username,name,password,deptId,email,mobile,status,userIdCreate,gmtCreate,gmtModified,sex,birth,province,city,district from sys_user where username=#{username}
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from sys_user
+		<where>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="username != null and username != ''"> and username = #{username} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="password != null and password != ''"> and password = #{password} </if>
+			<if test="deptId != null and deptId != ''"> and deptId = #{deptId} </if>
+			<if test="email != null and email != ''"> and email = #{email} </if>
+			<if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
+			<if test="status != null and status != ''"> and status = #{status} </if>
+			<if test="userIdCreate != null and userIdCreate != ''"> and userIdCreate = #{userIdCreate} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gmtCreate = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and gmtModified = #{gmtModified} </if>
+		</where>
+	</select>
+	
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.system.UserDO">
+		select
+		su.userId,su.username,su.name,su.password,su.deptId,sd.name deptName,su.email,su.mobile,su.status,su.userIdCreate,su.gmtCreate,su.gmtModified,sex,su.birth,su.province,su.city,su.district
+		from sys_user su,sys_dept sd where su.deptId=sd.deptId
+		<if test="userId != null and userId != ''"> and su.userId = #{userId} </if>
+		<if test="username != null and username != ''"> and su.username = #{username} </if>
+		<if test="name != null and name != ''"> and su.name = #{name} </if>
+		<if test="password != null and password != ''"> and su.password = #{password} </if>
+		<if test="deptId != null and deptId != ''"> and su.deptId = #{deptId} </if>
+		<if test="email != null and email != ''"> and su.email = #{email} </if>
+		<if test="mobile != null and mobile != ''"> and su.mobile = #{mobile} </if>
+		<if test="status != null and status != ''"> and su.status = #{status} </if>
+		<if test="userIdCreate != null and userIdCreate != ''"> and su.userIdCreate = #{userIdCreate} </if>
+		<if test="gmtCreate != null and gmtCreate != ''"> and su.gmtCreate = #{gmtCreate} </if>
+		<if test="gmtModified != null and gmtModified != ''"> and su.gmtModified = #{gmtModified} </if>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by su.userId desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+		</if>
+	</select>
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.system.UserDO"
+		useGeneratedKeys="true" keyProperty="userId">
+		insert into sys_user
+		(
+		username,
+		name,
+		password,
+		deptId,
+		email,
+		mobile,
+		status,
+		userIdCreate,
+		gmtCreate,
+		gmtModified,
+		sex,
+		birth,
+		province,
+		city,
+		district
+		)
+		values
+		(
+		#{username},
+		#{name},
+		#{password},
+		#{deptId},
+		#{email},
+		#{mobile},
+		#{status},
+		#{userIdCreate},
+		#{gmtCreate},
+		#{gmtModified},
+		#{sex},
+		#{birth},
+		#{province},
+		#{city},
+		#{district}
+		)
+	</insert>
+	
+	<update id="update" parameterType="cn.xsshome.mvcdo.pojo.system.UserDO">
+		update sys_user
+		<set>
+			<if test="username != null">username = #{username}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="password != null">password = #{password}, </if>
+			<if test="deptId != null">deptId = #{deptId}, </if>
+			<if test="email != null">email = #{email}, </if>
+			<if test="mobile != null">mobile = #{mobile}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="userIdCreate != null">userIdCreate = #{userIdCreate}, </if>
+			<if test="gmtCreate != null">gmtCreate = #{gmtCreate}, </if>
+			<if test="gmtModified != null">gmtModified = #{gmtModified},</if>
+			<if test="sex != null">sex = #{sex},</if>
+			<if test="birth != null">birth = #{birth},</if>
+			<if test="province != null">province = #{province},</if>
+			<if test="city != null">city = #{city},</if>
+			<if test="district != null">district = #{district}</if>
+		</set>
+		where userId = #{userId}
+	</update>
+	
+	<update id="updatePwd" parameterType="cn.xsshome.mvcdo.pojo.system.UserDO">
+		update sys_user
+		<set>
+			<if test="password != null">password = #{password} </if>
+		</set>
+		where userId = #{userId}
+	</update>
+	
+	<delete id="remove">
+		delete from sys_user where userId = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_user where userId in
+		<foreach item="userId" collection="array" open="(" separator=","
+			close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+	<select id="listAllDept" resultType="Long">
+		select DISTINCT deptId from sys_user
+	</select>
+</mapper>

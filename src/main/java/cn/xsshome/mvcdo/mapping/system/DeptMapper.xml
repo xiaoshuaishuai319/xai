@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xsshome.mvcdo.dao.system.DeptDao">
+
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.system.DeptDO">
+		select
+		deptId,parentId,name,orderNum,delFlag from sys_dept
+		where deptId = #{value}
+	</select>
+
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.system.DeptDO">
+		select deptId,parentId,name,orderNum,delFlag from
+		sys_dept
+		<where>
+			<if test="deptId != null and deptId != ''"> and deptId = #{deptId} </if>
+			<if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="orderNum != null and orderNum != ''"> and orderNum = #{orderNum} </if>
+			<if test="delFlag != null and delFlag != ''"> and delFlag = #{delFlag} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by deptId desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from sys_dept
+		<where>
+			<if test="deptId != null and deptId != ''"> and deptId = #{deptId} </if>
+			<if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="orderNum != null and orderNum != ''"> and orderNum = #{orderNum} </if>
+			<if test="delFlag != null and delFlag != ''"> and delFlag = #{delFlag} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.system.DeptDO"
+		useGeneratedKeys="true" keyProperty="deptId">
+		insert into sys_dept
+		(
+		parentId,
+		name,
+		orderNum,
+		delFlag
+		)
+		values
+		(
+		#{parentId},
+		#{name},
+		#{orderNum},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update" parameterType="cn.xsshome.mvcdo.pojo.system.DeptDO">
+		update sys_dept
+		<set>
+			<if test="parentId != null">parentId = #{parentId}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="orderNum != null">orderNum = #{orderNum}, </if>
+			<if test="delFlag != null">delFlag = #{delFlag}</if>
+		</set>
+		where deptId = #{deptId}
+	</update>
+
+	<delete id="remove">
+		delete from sys_dept where deptId = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from sys_dept where deptId in
+		<foreach item="deptId" collection="array" open="(" separator=","
+			close=")">
+			#{deptId}
+		</foreach>
+	</delete>
+	
+	<select id="listParentDept" resultType="long">
+		select DISTINCT parentId from sys_dept
+	</select>
+
+    <select id="getDeptUserNumber" resultType="int">
+		select count(*) from sys_user where deptId = #{value}
+	</select>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xsshome.mvcdo.dao.system.MenuDao">
+
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.system.MenuDO">
+		select
+		menuId,parentId,name,url,menuType,icon,orderNum,gmtCreate,gmtModified
+		from sys_menu where menuId = #{value}
+	</select>
+
+	<select id="listMenuByUserId" resultType="cn.xsshome.mvcdo.pojo.system.MenuDO">
+		select distinct
+		m.menuId , parentId, name, url,
+		menuType,icon,orderNum,gmtCreate, gmtModified
+		from sys_menu m
+		left
+		join sys_role_menu rm on m.menuId = rm.menuId left join
+		sys_user_role ur
+		on rm.roleId =ur.roleId where ur.userId = #{id}
+		and
+		m.menuType in(0,1)
+		order by
+		m.orderNum
+	</select>
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.system.MenuDO">
+		select
+		menuId,parentId,name,url,menuType,icon,orderNum,gmtCreate,gmtModified
+		from sys_menu
+		<where>
+			<if test="menuId != null and menuId != ''"> and menuId = #{menuId} </if>
+			<if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="url != null and url != ''"> and url = #{url} </if>
+			<if test="menuType != null and type != ''"> and menuType = #{type} </if>
+			<if test="icon != null and icon != ''"> and icon = #{icon} </if>
+			<if test="orderNum != null and orderNum != ''"> and orderNum = #{orderNum} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gmtCreate = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and gmtModified = #{gmtModified} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by menuId desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+		</if>
+	</select>
+		<select id="count" resultType="int">
+		select count(*) from sys_menu
+		<where>
+			<if test="menuId != null and menuId != ''"> and menuId = #{menuId} </if>
+			<if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="url != null and url != ''"> and url = #{url} </if>
+			<if test="menuType != null and type != ''"> and menuType = #{type} </if>
+			<if test="icon != null and icon != ''"> and icon = #{icon} </if>
+			<if test="orderNum != null and orderNum != ''"> and orderNum = #{orderNum} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gmtCreate = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and gmtModified = #{gmtModified} </if>
+		</where>
+	</select>
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.system.MenuDO"
+		useGeneratedKeys="true" keyProperty="menuId">
+		insert into sys_menu
+		(
+		parentId,
+		name,
+		url,
+		menuType,
+		icon,
+		orderNum,
+		gmtCreate,
+		gmtModified
+		)
+		values
+		(
+		#{parentId},
+		#{name},
+		#{url},
+		#{type},
+		#{icon},
+		#{orderNum},
+		#{gmtCreate},
+		#{gmtModified}
+		)
+	</insert>
+		<update id="update" parameterType="cn.xsshome.mvcdo.pojo.system.MenuDO">
+		update sys_menu
+		<set>
+			<if test="parentId != null">parentId = #{parentId}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="url != null">url = #{url}, </if>
+			<if test="menuType != null">menuType = #{type}, </if>
+			<if test="icon != null">icon = #{icon}, </if>
+			<if test="orderNum != null">orderNum = #{orderNum}, </if>
+			<if test="gmtCreate != null">gmtCreate = #{gmtCreate}, </if>
+			<if test="gmtModified != null">gmtModified = #{gmtModified}</if>
+		</set>
+		where menuId = #{menuId}
+	</update>
+
+	<delete id="remove">
+		delete from sys_menu where menuId = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from sys_menu where menuId in
+		<foreach item="menuId" collection="array" open="(" separator=","
+			close=")">
+			#{menuId}
+		</foreach>
+	</delete>
+</mapper>

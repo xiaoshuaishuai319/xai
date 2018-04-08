@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xsshome.mvcdo.dao.system.RoleDao">
+
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.system.RoleDO">
+		select
+		roleId,roleName,roleSign,remark,userIdCreate,gmtCreate,gmtModified
+		from sys_role where roleId = #{value}
+	</select>
+
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.system.RoleDO">
+		select
+		roleId,roleName,roleSign,remark,userIdCreate,gmtCreate,gmtModified
+		from sys_role
+		<where>
+			<if test="roleId != null and roleId != ''"> and roleId = #{roleId} </if>
+			<if test="roleName != null and roleName != ''"> and roleName = #{roleName} </if>
+			<if test="roleSign != null and roleSign != ''"> and roleSign = #{roleSign} </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			<if test="userIdCreate != null and userIdCreate != ''"> and userIdCreate = #{userIdCreate} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gmtCreate = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and gmtModified = #{gmtModified} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by roleId desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from sys_role
+		<where>
+			<if test="roleId != null and roleId != ''"> and roleId = #{roleId} </if>
+			<if test="roleName != null and roleName != ''"> and roleName = #{roleName} </if>
+			<if test="roleSign != null and roleSign != ''"> and roleSign = #{roleSign} </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			<if test="userIdCreate != null and userIdCreate != ''"> and userIdCreate = #{userIdCreate} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gmtCreate = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and gmtModified = #{gmtModified} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.system.RoleDO"
+		useGeneratedKeys="true" keyProperty="roleId">
+		insert into sys_role
+		(
+		roleName,
+		roleSign,
+		remark,
+		userIdCreate,
+		gmtCreate,
+		gmtModified
+		)
+		values
+		(
+		#{roleName},
+		#{roleSign},
+		#{remark},
+		#{userIdCreate},
+		#{gmtCreate},
+		#{gmtModified}
+		)
+	</insert>
+
+	<update id="update" parameterType="cn.xsshome.mvcdo.pojo.system.RoleDO">
+		update sys_role
+		<set>
+			<if test="roleName != null">roleName = #{roleName}, </if>
+			<if test="roleSign != null">roleSign = #{roleSign}, </if>
+			<if test="remark != null">remark = #{remark}, </if>
+			<if test="userIdCreate != null">userIdCreate = #{userIdCreate}, </if>
+			<if test="gmtCreate != null">gmtCreate = #{gmtCreate}, </if>
+			<if test="gmtModified != null">gmtModified = #{gmtModified}</if>
+		</set>
+		where roleId = #{roleId}
+	</update>
+
+	<delete id="remove">
+		delete from sys_role where roleId = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from sys_role where roleId in
+		<foreach item="roleId" collection="array" open="(" separator=","
+			close=")">
+			#{roleId}
+		</foreach>
+	</delete>
+
+</mapper>

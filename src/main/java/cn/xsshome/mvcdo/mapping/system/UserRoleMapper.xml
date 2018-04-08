@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xsshome.mvcdo.dao.system.UserRoleDao">
+
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.system.UserRoleDO">
+		select id,userId,roleId from
+		sys_user_role where id = #{value}
+	</select>
+
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.system.UserRoleDO">
+		select id,userId,roleId from sys_user_role
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="userId != null and userId != ''"> and userId = #{userId} </if>
+			<if test="roleId != null and roleId != ''"> and roleId = #{roleId} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from sys_user_role
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="userId != null and userId != ''"> and userId = #{userId} </if>
+			<if test="roleId != null and roleId != ''"> and roleId = #{roleId} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.system.UserRoleDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user_role
+		(
+		userId,
+		roleId
+		)
+		values
+		(
+		#{userId},
+		#{roleId}
+		)
+	</insert>
+
+	<update id="update" parameterType="cn.xsshome.mvcdo.pojo.system.UserRoleDO">
+		update sys_user_role
+		<set>
+			<if test="userId != null">userId = #{userId}, </if>
+			<if test="roleId != null">roleId = #{roleId}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from sys_user_role where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from sys_user_role where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="listRoleId" resultType="long">
+		select roleId from
+		sys_user_role where
+		userId=#{userId}
+	</select>
+
+	<delete id="removeByUserId">
+		delete from sys_user_role where userId=#{userId}
+	</delete>
+
+	<delete id="batchRemoveByUserId">
+		delete from sys_user_role where userId in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<insert id="batchSave">
+		INSERT INTO sys_user_role(userId, roleId) values
+		<foreach item="item" index="index" collection="list"
+			separator=",">
+			(#{item.userId},#{item.roleId})
+		</foreach>
+	</insert>
+</mapper>
