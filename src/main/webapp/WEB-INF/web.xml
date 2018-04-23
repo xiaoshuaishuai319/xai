@@ -89,6 +89,6 @@
 		<location>/notfound.jsp</location>
 	</error-page>
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>view/blog/index/main.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

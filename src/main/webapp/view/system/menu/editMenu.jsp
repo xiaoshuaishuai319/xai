@@ -30,8 +30,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="form-group">
 								<label class="col-sm-3 control-label">菜单类型：</label>
 								<div class="col-sm-8">
-									<label class="radio-inline"> <input type="radio" <c:if test="${menu.menuType==0}">checked</c:if> name="type" value="0" /> 目录
-									</label> <label class="radio-inline"> <input type="radio" <c:if test="${menu.menuType==1}">checked</c:if> name="type" value="1" /> 菜单
+									<label class="radio-inline"> <input type="radio" <c:if test="${menu.menuType==0}">checked</c:if> name="menuType" value="0" /> 目录
+									</label> <label class="radio-inline"> <input type="radio" <c:if test="${menu.menuType==1}">checked</c:if> name="menuType" value="1" /> 菜单
 									</label>
 								</div>
 							</div>

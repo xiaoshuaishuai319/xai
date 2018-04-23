@@ -82,7 +82,7 @@
 		#{parentId},
 		#{name},
 		#{url},
-		#{type},
+		#{menuType},
 		#{icon},
 		#{orderNum},
 		#{gmtCreate},

@@ -30,10 +30,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<label class="col-sm-3 control-label">菜单类型：</label>
 								<div class="col-sm-8">
 									<label class="radio-inline"> 
-									<input type="radio" name="type" value="0" /> 目录
+									<input type="radio" name="menuType" value="0" /> 目录
 									</label> 
 									<label class="radio-inline">
-									 <input type="radio" name="type" value="1" /> 菜单
+									 <input type="radio" name="menuType" value="1" /> 菜单
 									</label> 
 								</div>
 							</div>

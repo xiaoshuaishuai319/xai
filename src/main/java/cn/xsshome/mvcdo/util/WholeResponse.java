@@ -31,6 +31,13 @@ public class WholeResponse{
 		loginResponse.setMsg(msg);
 		return loginResponse;
 	}
+	public static WholeResponse successResponse(String code,String msg) {
+		WholeResponse loginResponse = new WholeResponse();
+		loginResponse.setLogId(new Date().getTime()/1000+"");
+		loginResponse.setCode(code);
+		loginResponse.setMsg(msg);
+		return loginResponse;
+	}
 	public String getLogId() {
 		return logId;
 	}
