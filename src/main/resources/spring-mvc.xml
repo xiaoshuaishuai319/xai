@@ -36,6 +36,7 @@
 		<mvc:exclude-mapping path="/common/**" />
 		<mvc:exclude-mapping path="/blog/**" />
 		<mvc:exclude-mapping path="/blog/**/**" />
+		<mvc:exclude-mapping path="/wcsp/**" />
 		<mvc:exclude-mapping path="/blog/**/**/**" />
 		<mvc:exclude-mapping path="/bootstrap/**" />
 		<mvc:exclude-mapping path="/bootstrap/**/**" />
