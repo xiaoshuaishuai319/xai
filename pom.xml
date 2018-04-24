@@ -36,6 +36,12 @@
 		<commons.version>3.6</commons.version>
     </properties>
   <dependencies>
+  		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15 -->
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk15</artifactId>
+		    <version>1.46</version>
+		</dependency>
   	    <!-- MySql -->
 		<dependency>
 			<groupId>mysql</groupId>
