@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xsshome.mvcdo.dao.ai.baidu.BDFaceDetectDao">
+	<!-- 查询单个对象 -->
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO">
+		select faceId,errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath from ai_bd_face where faceId = #{faceId} 
+	</select>
+	<!-- 查询所有 -->
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO">
+	select
+	faceId,errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath
+	from ai_bd_face
+	<where>
+		<if test="errorCode != null and errorCode != ''"> and errorCode = #{errorCode} </if>
+		<if test="errorMsg != null and errorMsg != ''"> and errorMsg = #{errorMsg} </if>
+		<if test="logId != null and logId != ''"> and logId = #{logId} </if>
+		<if test="age != null and age != ''"> and age = #{age} </if>
+		<if test="beauty != null and beauty != ''"> and beauty = #{beauty} </if>
+		<if test="expressionType != null and expressionType != ''"> and expressionType = #{expressionType} </if>
+		<if test="faceShapeType != null and faceShapeType != ''"> and faceShapeType = #{faceShapeType} </if>
+		<if test="gender != null and gender != ''"> and gender = #{gender} </if>
+		<if test="glassesType != null and glassesType != ''"> and glassesType = #{glassesType} </if>
+		<if test="raceType != null and raceType != ''"> and raceType = #{raceType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by timestamp desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计 -->
+ 	<select id="count" resultType="int">
+	select count(*) from ai_bd_face
+	<where>
+		<if test="errorCode != null and errorCode != ''"> and errorCode = #{errorCode} </if>
+		<if test="errorMsg != null and errorMsg != ''"> and errorMsg = #{errorMsg} </if>
+		<if test="logId != null and logId != ''"> and logId = #{logId} </if>
+		<if test="age != null and age != ''"> and age = #{age} </if>
+		<if test="beauty != null and beauty != ''"> and beauty = #{beauty} </if>
+		<if test="expressionType != null and expressionType != ''"> and expressionType = #{expressionType} </if>
+		<if test="faceShapeType != null and faceShapeType != ''"> and faceShapeType = #{faceShapeType} </if>
+		<if test="gender != null and gender != ''"> and gender = #{gender} </if>
+		<if test="glassesType != null and glassesType != ''"> and glassesType = #{glassesType} </if>
+		<if test="raceType != null and raceType != ''"> and raceType = #{raceType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+	</select>
+	<!-- 插入 -->
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO" useGeneratedKeys="true" keyProperty="faceId">
+		insert into ai_bd_face
+		(
+			errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath
+		)
+		values
+		(
+			#{errorCode}, 
+			#{errorMsg}, 
+			#{logId}, 
+			#{timestamp}, 
+			#{cached}, 
+			#{faceNum}, 
+			#{faceToken}, 
+			#{faceProbability}, 
+			#{age}, 
+			#{beauty}, 
+			#{expressionType}, 
+			#{faceShapeType}, 
+			#{gender}, 
+			#{glassesType}, 
+			#{raceType},
+			#{openId},
+			#{nikeName},
+			#{imagePath}
+		)
+	</insert>
+	<!-- 单个删除 -->
+	<delete id="remove">
+		delete from ai_bd_face where faceId = #{faceId}
+	</delete>
+	<!-- 批量删除 -->
+	<delete id="batchRemove">
+		delete from ai_bd_face where faceId in 
+		<foreach item="faceId" collection="array" open="(" separator="," close=")">
+			#{faceId}
+		</foreach>
+	</delete>
+</mapper>

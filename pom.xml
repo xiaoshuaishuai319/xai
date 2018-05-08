@@ -36,6 +36,12 @@
 		<commons.version>3.6</commons.version>
     </properties>
   <dependencies>
+  		<!-- 百度AISDK -->
+		<dependency>
+		    <groupId>com.baidu.aip</groupId>
+		    <artifactId>java-sdk</artifactId>
+		    <version>4.3.0</version>
+		</dependency>
   		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15 -->
 		<dependency>
 		    <groupId>org.bouncycastle</groupId>

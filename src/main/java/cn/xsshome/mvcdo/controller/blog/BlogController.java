@@ -1,7 +1,6 @@
 package cn.xsshome.mvcdo.controller.blog;
 
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,6 @@ public class BlogController {
 	String blog() {
 		return "blog/index/main";
 	}
-
 	@RequestMapping(value ="/open/list")
 	@ResponseBody
 	public PageUtils opentList(@RequestParam Map<String, Object> params) {

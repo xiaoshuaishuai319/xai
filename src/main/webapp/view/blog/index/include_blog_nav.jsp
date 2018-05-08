@@ -88,15 +88,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header page-scroll">
-			<button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button">
-				<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-			</button>
 			<a class="navbar-brand" href="index.html" style="font-size: 24px;">X-AI</a>
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="/">主页</a></li>
-				<li><a href="/bd/faceBD/detectface">人脸检测</a></li>
+				<li><a href="<%=basePath%>rest/face/index">人脸检测</a></li>
 				<li><a href="/bd/icrBD/icrdetect">图像识别</a></li>
 				<li><a href="/bd/ocrBD/ocrdetect">文字识别</a></li>
 			</ul>

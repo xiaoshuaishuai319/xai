@@ -17,4 +17,6 @@ public class Constant {
     public static Long DEPT_ROOT_ID = 0l;
     //部门根节点名称
     public static String DEPT_ROOT_NAME = "小帅丶科技";
+    //接口验证码 防止别人直接访问接口
+    public static String AUTH_CODE = "123465";
 }
