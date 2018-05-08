@@ -91,7 +91,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="row">
 				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 					<ul class="list-inline text-center">
-						<li><a href="https://jq.qq.com/?_wv=1027&k=5ICuFaQ"> <span class="fa-stack fa-lg"> <i class="fa fa-circle fa-stack-2x"></i> <i class="fa fa-qq fa-stack-1x fa-inverse"></i>
+						<li><a href="http://wpa.qq.com/msgrd?v=3&uin=783021975&site=qq&menu=yes"> <span class="fa-stack fa-lg"> <i class="fa fa-circle fa-stack-2x"></i> <i class="fa fa-qq fa-stack-1x fa-inverse"></i>
 							</span>
 						</a></li>
 						<li><a href="https://my.oschina.net/xshuai"> <span class="fa-stack fa-lg"> <i class="fa fa-circle fa-stack-2x"></i> <i class="fa fa-home fa-stack-1x fa-inverse"></i>
