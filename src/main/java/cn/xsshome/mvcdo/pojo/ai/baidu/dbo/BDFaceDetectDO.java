@@ -1,4 +1,4 @@
-package cn.xsshome.mvcdo.pojo.ai.baidu;
+package cn.xsshome.mvcdo.pojo.ai.baidu.dbo;
 /**
  * 百度人脸检测javabean
  * 表对应的javabean

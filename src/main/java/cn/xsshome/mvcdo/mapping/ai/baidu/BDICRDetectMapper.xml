@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xsshome.mvcdo.dao.ai.baidu.BDICRDetectDao">
+	<!-- 查询单个对象菜品 -->
+	<select id="getDish" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRDishDO">
+		select icrId,logId,resultNum,calorie,hasCalorie,dishName,probability,openId,nikeName,imagePath,enterType from ai_bd_dish where icrId = #{icrId} 
+	</select>
+	<!-- 查询所有菜品 -->
+	<select id="listDish" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRDishDO">
+	select
+	icrId,logId,resultNum,calorie,hasCalorie,dishName,probability,openId,nikeName,imagePath,enterType
+	from ai_bd_dish
+	<where>
+		<if test="dishName != null and dishName != ''"> and dishName = #{dishName} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by icrId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计菜品 -->
+ 	<select id="countDish" resultType="int">
+	select count(*) from ai_bd_dish
+		<where>
+		<if test="dishName != null and dishName != ''"> and dishName = #{dishName} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+	</select>
+	<!-- 插入菜品 -->
+	<insert id="saveDish" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRDishDO" useGeneratedKeys="true" keyProperty="icrId">
+		insert into ai_bd_dish
+		(
+			logId,resultNum,calorie,hasCalorie,dishName,probability,openId,nikeName,imagePath,enterType
+		)
+		values
+		(
+			#{logId}, 
+			#{resultNum}, 
+			#{calorie}, 
+			#{hasCalorie}, 
+			#{dishName}, 
+			#{probability}, 
+			#{openId},
+			#{nikeName},
+			#{imagePath},
+			#{enterType}
+		)
+	</insert>
+	<!-- 单个删除菜品 -->
+	<delete id="removeDish">
+		delete from ai_bd_dish where icrId = #{icrId}
+	</delete>
+	<!-- 批量删除菜品 -->
+	<delete id="batchRemoveDish">
+		delete from ai_bd_dish where icrId in 
+		<foreach item="icrId" collection="array" open="(" separator="," close=")">
+			#{icrId}
+		</foreach>
+	</delete>
+	
+	<!-- 查询融合对象图像识别数据 -->
+	<select id="listFuse" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRFuseDO">
+	select
+	icrId,logId,resultNum,icrName,score,Pyear,colorResult,localWidth,localHeight,localTop,localLeft,logoType,probability,imagePath,openId,nikeName,enterType,apiType
+	from ai_bd_icrfuse
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="icrName != null and icrName != ''"> and icrName = #{icrName} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by icrId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计融合对象图像识别 -->
+ 	<select id="countFuse" resultType="int">
+	select count(*) from ai_bd_icrfuse
+		<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="icrName != null and icrName != ''"> and icrName = #{icrName} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+	</select>
+	<!-- 插入融合对象图像识别 -->
+	<insert id="saveFuse" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRFuseDO" useGeneratedKeys="true" keyProperty="icrId">
+		insert into ai_bd_icrfuse
+		(
+			logId,resultNum,icrName,score,Pyear,colorResult,localWidth,localHeight,localTop,localLeft,logoType,probability,imagePath,openId,nikeName,enterType,apiType
+		)
+		values
+		(
+			#{logId}, 
+			#{resultNum}, 
+			#{icrName}, 
+			#{score}, 
+			#{Pyear}, 
+			#{colorResult}, 
+			#{localWidth},
+			#{localHeight},
+			#{localTop},
+			#{localTop},
+			#{logoType},
+			#{probability},
+			#{imagePath},
+			#{openId},
+			#{nikeName},
+			#{enterType},
+			#{apiType}
+		)
+	</insert>
+	<!-- 单个删除融合对象图像识别 -->
+	<delete id="removeFuse">
+		delete from ai_bd_icrfuse where icrId = #{icrId}
+	</delete>
+	<!-- 批量删除融合对象图像识别 -->
+	<delete id="batchRemoveFuse">
+		delete from ai_bd_icrfuse where icrId in 
+		<foreach item="icrId" collection="array" open="(" separator="," close=")">
+			#{icrId}
+		</foreach>
+	</delete>
+</mapper>

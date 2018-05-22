@@ -32,7 +32,7 @@
 			<if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
 			<if test="name != null and name != ''"> and name = #{name} </if>
 			<if test="url != null and url != ''"> and url = #{url} </if>
-			<if test="menuType != null and type != ''"> and menuType = #{type} </if>
+			<if test="menuType != null and menuType != ''"> and menuType = #{menuType} </if>
 			<if test="icon != null and icon != ''"> and icon = #{icon} </if>
 			<if test="orderNum != null and orderNum != ''"> and orderNum = #{orderNum} </if>
 			<if test="gmtCreate != null and gmtCreate != ''"> and gmtCreate = #{gmtCreate} </if>
@@ -57,7 +57,7 @@
 			<if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
 			<if test="name != null and name != ''"> and name = #{name} </if>
 			<if test="url != null and url != ''"> and url = #{url} </if>
-			<if test="menuType != null and type != ''"> and menuType = #{type} </if>
+			<if test="menuType != null and menuType != ''"> and menuType = #{menuType} </if>
 			<if test="icon != null and icon != ''"> and icon = #{icon} </if>
 			<if test="orderNum != null and orderNum != ''"> and orderNum = #{orderNum} </if>
 			<if test="gmtCreate != null and gmtCreate != ''"> and gmtCreate = #{gmtCreate} </if>
@@ -95,7 +95,7 @@
 			<if test="parentId != null">parentId = #{parentId}, </if>
 			<if test="name != null">name = #{name}, </if>
 			<if test="url != null">url = #{url}, </if>
-			<if test="menuType != null">menuType = #{type}, </if>
+			<if test="menuType != null">menuType = #{menuType}, </if>
 			<if test="icon != null">icon = #{icon}, </if>
 			<if test="orderNum != null">orderNum = #{orderNum}, </if>
 			<if test="gmtCreate != null">gmtCreate = #{gmtCreate}, </if>

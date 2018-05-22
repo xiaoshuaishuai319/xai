@@ -1,6 +1,7 @@
 package cn.xsshome.mvcdo.interceptor;
 
 import cn.xsshome.mvcdo.common.AIConstant;
+import cn.xsshome.mvcdo.common.AipAdded;
 
 import com.baidu.aip.face.AipFace;
 import com.baidu.aip.imageclassify.AipImageClassify;
@@ -14,6 +15,17 @@ public class BDFactory {
 	private static AipFace aipFace;
 	private static AipOcr aipOcr;
 	private static AipImageClassify aipImageClassify;
+	private static AipAdded aipAdded;
+	public static AipAdded getAipAdded(){
+		if(aipAdded==null){
+			synchronized (AipFace.class) {
+				if(aipAdded==null){
+					aipAdded = new AipAdded(AIConstant.BD_ICR_APPID, AIConstant.BD_ICR_APPKEY, AIConstant.BD_ICR_SECRETKEY);
+				}
+			}
+		}
+		return aipAdded;
+	}
 	public static AipFace getAipFace(){
 		if(aipFace==null){
 			synchronized (AipFace.class) {

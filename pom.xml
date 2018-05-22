@@ -185,6 +185,12 @@
 			<artifactId>xxl-excel</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/cn.xsshome/taip -->
+		<dependency>
+		    <groupId>cn.xsshome</groupId>
+		    <artifactId>taip</artifactId>
+		    <version>4.1.0</version>
+		</dependency>
   </dependencies>
   <build>
     <finalName>mvcdo</finalName>

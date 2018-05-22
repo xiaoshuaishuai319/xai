@@ -1,6 +1,7 @@
 package cn.xsshome.mvcdo.util;
 
 import java.io.*;
+import java.util.Date;
 import java.util.UUID;
 
 public class FileUtil {
@@ -39,6 +40,7 @@ public class FileUtil {
 		}
 	}
 	public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
+		System.out.println("begin====="+new Date().getTime());
 		File targetFile = new File(filePath);
 		if (!targetFile.exists()) {
 			targetFile.mkdirs();

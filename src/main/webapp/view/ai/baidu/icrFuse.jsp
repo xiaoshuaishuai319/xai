@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>人脸识别</title>
+    <title>融合识别</title>
     <jsp:include page="/common/header.jsp"></jsp:include>
     <link href="<%=basePath%>/bootstrap/css/layui.css" rel="stylesheet">
     <style type="text/css">
@@ -33,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="ibox">
 				<div class="ibox-body">
 					<div class="columns pull-left">
-					微信|支付宝订单号:<input id="centerSeqId" class="cmcbsearch" placeholder="请输入微信|支付宝订单号" type="text">
+					微信昵称:<input id="nickName" class="cmcbsearch" placeholder="请输入微信昵称" type="text">
 					<button class="btn btn-success" onclick="reLoad()"> 查 询</button>
 					</div>
 					<table id="exampleTable" data-mobile-responsive="true">
@@ -70,7 +70,7 @@ var prefix = "<%=basePath%>";
  function load() {
 	$('#exampleTable').bootstrapTable({
 				method : 'get', // 服务器数据的请求方式 get or post
-				url : prefix + "bdface/list", // 服务器数据的加载地址
+				url : prefix + "bdicr/listFuse", // 服务器数据的加载地址
 				iconSize : 'outline',
 				toolbar : '#exampleToolbar',
 				striped : true, // 设置为true会有隔行变色效果
@@ -103,156 +103,69 @@ var prefix = "<%=basePath%>";
 					},
 					{
 						checkbox : true
-					},
-					{
-						field : 'faceId', // 列字段名
+					},{
+						field : 'icrId', // 列字段名
 						title : '序号', // 列标题,
 						visible:false,
 						width:50
-					},
-					{
+					},{
 						field : 'logId',
 						title : '日志ID',
 						visible:false,
 						width:100
 					},{
 						field : 'imagePath',
-						title : '人脸图片',
-						width:70,
+						title : '识别图片',
+						width:100,
 						formatter:function (value,row,index) {
 							var values='.'+value;
-							var a = '<img title="年龄:'+row.age+',颜值:'+row.beauty+'" class="faceimage" src="'+values+'" width="66px" height="66px" onerror="this.src=\'./image/loadfail.png\'">';
+							var a = '<img title="名称:'+row.icrName+'" class="faceimage" src="'+values+'" width="66px" height="66px" onerror="this.src=\'./image/loadfail.png\'">';
 							return a;
                         }						
-					}, {
-						field : 'faceToken',
-						title : '百度标识',
-						width:200
-					},
-					{
-						field : 'faceProbability',
+					},{
+						field : 'icrName',
+						title : '识别名称',
+						width:100
+					},{
+						field : 'score',
+						title : '可信分数',
+						width:100
+					},{
+						field : 'Pyear',
+						title : '车型年份',
+						width:100
+					},{
+						field : 'colorResult',
+						title : '车型颜色',
+						width:100
+					},{
+						field : 'probability',
 						title : '置信度',
-						width:50
-					},
-					{
-						field : 'age',
-						title : '年龄 ',
-						width:50
-					},
-					{
-						field : 'beauty',
-						title : '颜值',
-						width:50,
-						formatter : function(value, row, index) {
-							return value.substring(0,5);
-						}
-					},
-					{
-						field : 'expressionType',
-						title : '表情',
-						width:50,
-						formatter : function(value, row, index) {
-							if(value=='none'){
-								value= "不笑";
-							}else if(value=='smile'){
-								value= "微笑";
-							}else if(value=='laugh'){
-								value= "大笑";
-							}else{
-								value= "未知";
-							}
-							return value;
-						}
-					},
-					{
-						field : 'faceShapeType',
-						title : '脸型',
-						width:65,
-						formatter : function(value, row, index) {
-							if(value=='square'){
-								value= "正方形";
-							}else if(value=='triangle'){
-							value= "三角形";
-							}else if(value=='oval'){
-							value= "椭圆";
-							}else if(value=='heart'){
-							value= "心形";
-							}else if(value=='round'){
-							value= "圆形";
-							}else{
-							value= "未知";
-							}
-							return value;
-						}
-					},
-					{
-						field : 'gender',
-						title : '性别',
-						width:50,
-					    formatter : function(value, row, index) {
-							if(value=='male'){
-								value= "男性";
-							}else if(value=='female'){
-							value= "女性";
-							}else{
-							value= "未知";
-							}
-							return value;
-						}
-					},
-					{
-						field : 'glassesType',
-						title : '眼镜类型',
-						width:70,
-						formatter : function(value, row, index) {
-							if(value=='none'){
-								value= "无眼镜";
-							}else if(value=='common'){
-							value= "普通眼镜";
-							}else if(value=='sun'){
-							value= "墨镜";
-							}else{
-							value= "未知";
-							}
-							return value;
-						}
-					},
-					{
-						field : 'raceType',
-						title : '肤色种类',
-						width:70,
-						formatter : function(value, row, index) {
-							if(value=='yellow'){
-								value= "黄种人";
-							}else if(value=='white'){
-							 value= "白种人";
-							}else if(value=='black'){
-							 value= "黑种人";
-							}else if(value=='arabs'){
-							 value="阿拉伯人";
-							}else{
-							 value= "未知";
-							}
-							return value;
-						}						
-					},
-					{
+						width:110
+					},{
+						field : 'enterType',
+						title : '访问类型',
+						width:110
+					},{
 						field : 'openId',
 						title : '微信openid',
 						width:110
-					},
-					{
+					},{
 						field : 'nikeName',
 						title : '微信昵称',
-						width:70
+						width:100
+					},{
+						field : 'apiType',
+						title : '接口类型',
+						width:100
 					},{
 						title : '操作',
 						field : 'id',
 						align : 'center',
 						width:130,
 						formatter : function(value, row, index) {
-							var e = '<a  class="btn btn-primary btn-sm ' + s_edit_h + '"  title="查看详情" onclick="view(\''+ row.faceId+ '\')"><i class="fa fa-edit "></i></a> ';
-							var d = '<a class="btn btn-warning btn-sm ' + s_edit_h + '" " title="删除"  onclick="remove(\''+ row.faceId+'\')"><i class="fa fa-remove"></i></a> ';
+							var e = '<a  class="btn btn-primary btn-sm ' + s_edit_h + '"  title="查看详情" onclick="view(\''+ row.icrId+ '\')"><i class="fa fa-edit "></i></a> ';
+							var d = '<a class="btn btn-warning btn-sm ' + s_edit_h + '" " title="删除"  onclick="remove(\''+ row.icrId+'\')"><i class="fa fa-remove"></i></a> ';
 							return e+d;
 						}
 					} ]
@@ -266,7 +179,7 @@ var prefix = "<%=basePath%>";
 		layer.confirm('确定要删除选中的内容？', {btn : [ '确定', '取消' ]
 		}, function() {
 			$.ajax({
-				url : prefix + "bdface/remove",
+				url : prefix + "bdicr/removeFuse",
 				type : "post",
 				data : {
 					'id' : id
@@ -282,18 +195,6 @@ var prefix = "<%=basePath%>";
 			});
 		})
 	}
-	//编辑操作
-	function view(id) {
-		layer.open({
-			type : 2,
-			title : '详情',
-			maxmin : true,
-			shadeClose : true, // 点击遮罩关闭层
-			area : [ '800px', '620px' ],
-			offset:'100px',
-			content : prefix + 'cmbct/viewCmbcT/' + id // iframe的url
-		});
-	}
 	//批量删除操作
 	function batchRemove() {
 		var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
@@ -305,7 +206,7 @@ var prefix = "<%=basePath%>";
 			}, function() {
 			var ids = new Array();
 			$.each(rows, function(i, row) {
-						ids[i] = row['faceId'];
+						ids[i] = row['icrId'];
 					});
 					console.log(ids);
 					$.ajax({
@@ -313,7 +214,7 @@ var prefix = "<%=basePath%>";
 						data : {
 							"ids" : ids
 						},
-						url : prefix + 'bdface/batchRemove',
+						url : prefix + 'bdicr/batchRemoveFuse',
 						success : function(r) {
 							if (r.code == 0) {
 								layer.msg(r.msg,{icon:1});

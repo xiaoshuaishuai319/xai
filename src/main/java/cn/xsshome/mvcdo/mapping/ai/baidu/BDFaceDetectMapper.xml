@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.xsshome.mvcdo.dao.ai.baidu.BDFaceDetectDao">
 	<!-- 查询单个对象 -->
-	<select id="get" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO">
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO">
 		select faceId,errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath from ai_bd_face where faceId = #{faceId} 
 	</select>
 	<!-- 查询所有 -->
-	<select id="list" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO">
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO">
 	select
 	faceId,errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath
 	from ai_bd_face
@@ -55,7 +55,7 @@
 	</where>
 	</select>
 	<!-- 插入 -->
-	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO" useGeneratedKeys="true" keyProperty="faceId">
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO" useGeneratedKeys="true" keyProperty="faceId">
 		insert into ai_bd_face
 		(
 			errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath

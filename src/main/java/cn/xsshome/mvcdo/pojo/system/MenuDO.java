@@ -1,7 +1,6 @@
 package cn.xsshome.mvcdo.pojo.system;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class MenuDO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -174,7 +173,7 @@ public class MenuDO implements Serializable {
 				", name='" + name + '\'' +
 				", url='" + url + '\'' +
 				", perms='" + perms + '\'' +
-				", type=" + menuType +
+				", menuType=" + menuType +
 				", icon='" + icon + '\'' +
 				", orderNum=" + orderNum +
 				", gmtCreate=" + gmtCreate +

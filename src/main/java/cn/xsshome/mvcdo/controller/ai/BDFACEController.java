@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.xsshome.mvcdo.common.Constant;
-import cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO;
+import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO;
 import cn.xsshome.mvcdo.service.ai.baidu.BDFaceDetectService;
 import cn.xsshome.mvcdo.util.PageUtils;
 import cn.xsshome.mvcdo.util.Query;

@@ -1,7 +1,7 @@
 /**
  * Copyright 2018 xsshome.cn
  */
-package cn.xsshome.mvcdo.pojo.ai.baidu;
+package cn.xsshome.mvcdo.pojo.ai.baidu.po;
 
 import java.util.List;
 /**

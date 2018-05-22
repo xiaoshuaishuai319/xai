@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO;
+import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO;
 
 
 /**

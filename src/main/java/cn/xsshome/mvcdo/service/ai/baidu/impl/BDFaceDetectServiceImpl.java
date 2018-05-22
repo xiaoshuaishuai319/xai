@@ -1,14 +1,21 @@
 package cn.xsshome.mvcdo.service.ai.baidu.impl;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.xsshome.mvcdo.dao.ai.baidu.BDFaceDetectDao;
-import cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO;
+import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO;
 import cn.xsshome.mvcdo.service.ai.baidu.BDFaceDetectService;
+/**
+ * 
+ * @author 小帅丶
+ * @date 2018年5月18日
+ * <p>Description: 人脸检测实现类</p>
+ */
 @Service
 public class BDFaceDetectServiceImpl implements BDFaceDetectService{
 	@Autowired

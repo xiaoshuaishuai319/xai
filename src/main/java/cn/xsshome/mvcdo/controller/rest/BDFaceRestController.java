@@ -23,9 +23,10 @@ import com.baidu.aip.face.AipFace;
 import com.baidu.aip.util.Base64Util;
 
 import cn.xsshome.mvcdo.common.AIConstant;
+import cn.xsshome.mvcdo.common.Constant;
 import cn.xsshome.mvcdo.interceptor.BDFactory;
-import cn.xsshome.mvcdo.pojo.ai.baidu.BDFaceDetectDO;
-import cn.xsshome.mvcdo.pojo.ai.baidu.FaceV3DetectBean;
+import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO;
+import cn.xsshome.mvcdo.pojo.ai.baidu.po.FaceV3DetectBean;
 import cn.xsshome.mvcdo.service.ai.baidu.BDFaceDetectService;
 import cn.xsshome.mvcdo.util.FileUtil;
 import cn.xsshome.mvcdo.util.PrintUtil;
@@ -84,7 +85,7 @@ public class BDFaceRestController {
             }else if(clientType!=null&&clientType.equals("wcs")){
               String authCode = request.getParameter("authCode");
               logger.info("=======authCode:"+authCode);
-            	if(!authCode.equals("123456")){
+            	if(!authCode.equals(Constant.AUTH_CODE)){
             		 BdFaceResponse bdFaceResponse = new BdFaceResponse();
                      bdFaceResponse.setCode(BDConstant.BD_NOTFUND.getCode().toString());
                      bdFaceResponse.setMsg(BDConstant.BD_NOTFUND.getMsg());

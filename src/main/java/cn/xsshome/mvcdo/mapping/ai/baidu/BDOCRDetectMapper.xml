@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xsshome.mvcdo.dao.ai.baidu.BDOCRDetectDao">
+	<!-- 查询所有文字识别 -->
+	<select id="listOcrGeneral" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRGeneralDO">
+	select
+	ocrId,logId,errorCode,errorMsg,direction,wordsResultNum,words,imagePath,openId,nikeName,enterType,apiType
+	from ai_bd_ocr
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by ocrId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计文字识别 -->
+ 	<select id="countOcrGeneral" resultType="int">
+	select count(*) from ai_bd_ocr
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+	</select>
+	<!-- 插入文字识别 -->
+	<insert id="saveOcrGeneral" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRGeneralDO" useGeneratedKeys="true" keyProperty="ocrId">
+		insert into ai_bd_ocr
+		(logId,errorCode,errorMsg,direction,wordsResultNum,words,imagePath,openId,nikeName,enterType,apiType)
+		values
+		(
+			#{logId}, 
+			#{errorCode}, 
+			#{errorMsg}, 
+			#{direction}, 
+			#{wordsResultNum}, 
+			#{words}, 
+			#{imagePath}, 
+			#{openId},
+			#{nikeName},
+			#{enterType},
+			#{apiType}
+		)
+	</insert>
+	<!-- 单个删除文字识别 -->
+	<delete id="removeOcrGeneral">
+		delete from ai_bd_ocr where ocrId = #{ocrId}
+	</delete>
+	<!-- 批量文字识别 -->
+	<delete id="batchRemoveOcrGeneral">
+		delete from ai_bd_ocr where ocrId in 
+		<foreach item="ocrId" collection="array" open="(" separator="," close=")">
+			#{ocrId}
+		</foreach>
+	</delete>
+	
+	<!-- 查询所有身份证文字识别 -->
+	<select id="listOcrIdCard" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRIdCardDO">
+	select
+	ocrId,logId,errorCode,errorMsg,direction,wordsResultNum,imageStatus,address,birth,name,idCardNum,sex,nation,issueDate,authority,expiryDate,imagePath,openId,nikeName,enterType,apiType,riskType
+	from ai_bd_ocridcard
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by ocrId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计身份证文字识别 -->
+ 	<select id="countOcrIdCard" resultType="int">
+	select count(*) from ai_bd_ocridcard
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+	</select>
+	<!-- 插入身份证文字识别 -->
+	<insert id="saveOcrIdCard" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRIdCardDO" useGeneratedKeys="true" keyProperty="ocrId">
+		insert into ai_bd_ocridcard
+		(logId,errorCode,errorMsg,direction,wordsResultNum,imageStatus,address,birth,name,idCardNum,sex,nation,issueDate,authority,expiryDate,imagePath,openId,nikeName,enterType,apiType,riskType)
+		values
+		(
+			#{logId}, 
+			#{errorCode}, 
+			#{errorMsg}, 
+			#{direction}, 
+			#{wordsResultNum}, 
+			#{imageStatus},
+			#{address},
+			#{birth},
+			#{name},
+			#{idCardNum},
+			#{sex},
+			#{nation},
+			#{issueDate},
+			#{authority},
+			#{expiryDate},
+			#{imagePath}, 
+			#{openId},
+			#{nikeName},
+			#{enterType},
+			#{apiType},
+			#{riskType}
+		)
+	</insert>
+	<!-- 单个删除身份证文字识别 -->
+	<delete id="removeOcrIdCard">
+		delete from ai_bd_ocridcard where ocrId = #{ocrId}
+	</delete>
+	<!-- 批量删除身份证文字识别 -->
+	<delete id="batchRemoveOcrIdCard">
+		delete from ai_bd_ocridcard where ocrId in 
+		<foreach item="ocrId" collection="array" open="(" separator="," close=")">
+			#{ocrId}
+		</foreach>
+	</delete>
+</mapper>
