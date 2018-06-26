@@ -1,6 +1,6 @@
 package cn.xsshome.mvcdo.vo;
 
-public class BDDishResponse extends BdResponse{
+public class BDDishResponse extends RestResponse{
 	/**
 	 * 卡路里，每100g的卡路里含量
 	 */

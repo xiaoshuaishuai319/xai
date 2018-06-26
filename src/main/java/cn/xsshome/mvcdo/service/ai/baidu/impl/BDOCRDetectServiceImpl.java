@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.xsshome.mvcdo.dao.ai.baidu.BDOCRDetectDao;
+import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRBankCardDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRGeneralDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRIdCardDO;
 import cn.xsshome.mvcdo.service.ai.baidu.BDOCRDetectService;
@@ -58,6 +59,26 @@ public class BDOCRDetectServiceImpl implements BDOCRDetectService{
 
 	public int batchRemoveOcrIdCard(Long[] ocrIds) {
 		return bdocrDetectMapper.batchRemoveOcrIdCard(ocrIds);
+	}
+
+	public List<BDOCRBankCardDO> listOcrBankCard(Map<String, Object> map) {
+		return bdocrDetectMapper.listOcrBankCard(map);
+	}
+
+	public int countOcrBankCard(Map<String, Object> map) {
+		return bdocrDetectMapper.countOcrBankCard(map);
+	}
+
+	public int saveOcrBankCard(BDOCRBankCardDO bdocrBankCardDO) {
+		return bdocrDetectMapper.saveOcrBankCard(bdocrBankCardDO);
+	}
+
+	public int removeOcrBankCard(Long ocrId) {
+		return bdocrDetectMapper.removeOcrBankCard(ocrId);
+	}
+
+	public int batchRemoveBankIdCard(Long[] ocrIds) {
+		return bdocrDetectMapper.batchRemoveBankIdCard(ocrIds);
 	}
 
 }

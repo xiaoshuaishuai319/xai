@@ -1,6 +1,6 @@
 package cn.xsshome.mvcdo.vo;
 
-public class BDOCRGeneralResponse extends BdResponse{
+public class BDOCRGeneralResponse extends RestResponse{
 	/**
 	 * 识别结果字符串
 	 */

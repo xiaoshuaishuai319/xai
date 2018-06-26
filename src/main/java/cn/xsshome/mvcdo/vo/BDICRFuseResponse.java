@@ -1,6 +1,6 @@
 package cn.xsshome.mvcdo.vo;
 
-public class BDICRFuseResponse extends BdResponse{
+public class BDICRFuseResponse extends RestResponse{
 	/**
 	 * 识别的名称
 	 */

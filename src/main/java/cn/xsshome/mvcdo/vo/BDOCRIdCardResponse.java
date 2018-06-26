@@ -5,7 +5,7 @@ package cn.xsshome.mvcdo.vo;
  * @date 2018年5月21日
  * <p>Description: 身份证识别结果页面对象</p>
  */
-public class BDOCRIdCardResponse extends BdResponse{
+public class BDOCRIdCardResponse extends RestResponse{
 	/**
 	 * 图片状态
 	 */

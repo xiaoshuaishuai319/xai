@@ -40,4 +40,8 @@ public class BDFaceDetectServiceImpl implements BDFaceDetectService{
 		return bdFaceDetectMapper.batchRemove(faceIds);
 	}
 
+	public BDFaceDetectDO getFaceByToken(String face_token) {
+		return bdFaceDetectMapper.getFaceByToken(face_token);
+	}
+
 }

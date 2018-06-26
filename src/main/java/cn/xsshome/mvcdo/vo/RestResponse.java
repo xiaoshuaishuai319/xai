@@ -2,11 +2,10 @@ package cn.xsshome.mvcdo.vo;
 
 /**
  * 百度响应基类
- *
  * @author 小帅丶
  * @create 2018-02-02 11:51
  **/
-public class BdResponse {
+public class RestResponse {
     private  String code;
     private  String msg;
     private  String type;

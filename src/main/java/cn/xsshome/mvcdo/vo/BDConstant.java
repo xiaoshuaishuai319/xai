@@ -7,6 +7,8 @@ package cn.xsshome.mvcdo.vo;
 public enum  BDConstant {
     BD_SUCCESS(0,"成功"),
     BD_NOFACE(1,"图中不包含人脸"),
+    YT_NOHWOCR(1,"图中未能识别出手写文字"),
+    YT_NOHT(1,"图中未能识别出手势动作"),
     BD_ERROR(5,"出错了，快联系小帅吧"),
     BD_403(403,"亲，接口不支持访问"),
     BD_NULL(500,"参数缺失"),

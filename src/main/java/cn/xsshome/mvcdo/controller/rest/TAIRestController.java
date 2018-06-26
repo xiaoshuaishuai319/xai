@@ -30,8 +30,8 @@ import cn.xsshome.taip.ptu.TAipPtu;
 @Controller
 @RequestMapping(value="rest/ptu")
 @Scope("prototype")
-public class TAIFaceMergeRestController {
-	private static Logger logger = LoggerFactory.getLogger(TAIFaceMergeRestController.class);
+public class TAIRestController {
+	private static Logger logger = LoggerFactory.getLogger(TAIRestController.class);
 	TAipPtu aipPtu = new TAipPtu(AIConstant.QQ_APPID, AIConstant.QQ_APPKEY);
 	/**
 	 * 人脸融合接口
@@ -47,7 +47,7 @@ public class TAIFaceMergeRestController {
 		logger.info("=======访问的IP"+request.getRemoteAddr()+"======访问的User-Agent:"+request.getHeader("User-Agent"));
 		logger.info("=======访问的类型"+clientType+"=======模板id："+model); 
 		try {
-			if(!clientType.equals("wcs")){
+			if(!clientType.equals("wsc")){
 				 BDDishResponse bdDishResponse = new BDDishResponse();
 				 bdDishResponse.setCode(BDConstant.BD_403.getCode().toString());
 				 bdDishResponse.setMsg("缺少必要参数");
@@ -56,7 +56,7 @@ public class TAIFaceMergeRestController {
                 PrintUtil.printJson(response,resultData);
 			}else{
 				String authCode = request.getParameter("authCode");
-				if(!authCode.equals(Constant.AUTH_CODE)){
+				if(null==authCode||!authCode.equals(Constant.AUTH_CODE)){
 					BDDishResponse bdDishResponse = new BDDishResponse();
             		bdDishResponse.setCode(BDConstant.BD_NOTFUND.getCode().toString());
             		bdDishResponse.setMsg(BDConstant.BD_NOTFUND.getMsg());
@@ -64,7 +64,8 @@ public class TAIFaceMergeRestController {
                     logger.info("=====接口返回的内容:"+resultData);
                     PrintUtil.printJson(response,resultData);
 				}else{
-					resultData = aipPtu.faceMerge(file.getBytes(), model);
+					byte[] image = file.getBytes();
+					resultData = aipPtu.faceMerge(image, model);
 					JSONObject object = JSON.parseObject(resultData);
 					if(object.getInteger("ret")!=0){
 						QQSendEmailUtil.send_email("人脸融合接口错误警报", "接口返回内容：\n"+resultData+"\n访问接口的ip："+request.getRemoteAddr(), "youngxiaoshuai@163.com");

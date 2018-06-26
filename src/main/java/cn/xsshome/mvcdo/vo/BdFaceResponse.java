@@ -5,7 +5,7 @@ package cn.xsshome.mvcdo.vo;
  * @author 小帅丶
  * @create 2018年5月7日
  **/
-public class BdFaceResponse extends BdResponse{
+public class BdFaceResponse extends RestResponse{
     //年龄
     private String age;
     //美丑
