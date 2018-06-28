@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>文字识别</title>
+    <title>优图识别</title>
     <jsp:include page="/common/header.jsp"></jsp:include>
     <link href="<%=basePath%>/bootstrap/css/layui.css" rel="stylesheet">
     <style type="text/css">
@@ -33,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="ibox">
 				<div class="ibox-body">
 					<div class="columns pull-left">
-					微信昵称:<input id="nickName" class="cmcbsearch" placeholder="请输入微信昵称" type="text">
+					接口类型:<input id="apiType" class="cmcbsearch" placeholder="请输入接口类型" type="text">
 					<button class="btn btn-success" onclick="reLoad()"> 查 询</button>
 					</div>
 					<table id="exampleTable" data-mobile-responsive="true">
@@ -70,7 +70,7 @@ var prefix = "<%=basePath%>";
  function load() {
 	$('#exampleTable').bootstrapTable({
 				method : 'get', // 服务器数据的请求方式 get or post
-				url : prefix + "bdocr/listOcrGeneral", // 服务器数据的加载地址
+				url : prefix + "youtu/listYouTuFuse", // 服务器数据的加载地址
 				iconSize : 'outline',
 				toolbar : '#exampleToolbar',
 				striped : true, // 设置为true会有隔行变色效果
@@ -90,7 +90,7 @@ var prefix = "<%=basePath%>";
 						// 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 						limit : params.limit,
 						offset : params.offset,
-						nikeName : $('#nikeName').val()
+						apiType : $('#apiType').val()
 					};
 				},
 				columns : [
@@ -104,15 +104,10 @@ var prefix = "<%=basePath%>";
 					{
 						checkbox : true
 					},{
-						field : 'ocrId', // 列字段名
+						field : 'youtuId', // 列字段名
 						title : '序号', // 列标题,
 						visible:false,
 						width:50
-					},{
-						field : 'logId',
-						title : '日志ID',
-						visible:false,
-						width:100
 					},{
 						field : 'imagePath',
 						title : '识别的图片',
@@ -123,45 +118,41 @@ var prefix = "<%=basePath%>";
 							return a;
                         }						
 					},{
-						field : 'words',
-						title : '识别的内容',
+						field : 'itemstring',
+						title : '识别手写内容',
 						width:110,
 						formatter:function(value,row,index){
-							var values = value.substring(0,35)+"...";
-							return values;
-						}
-					},{
-						field : 'wordsResultNum',
-						title : '识别个数',
-						width:80
-					},{
-						field : 'direction',
-						title : '图片朝向',
-						width:100,
-						formatter:function(value,row,index){
-							var values = "";
-							if(value==-1){
-								values="未定义";
-							}else if(value==0){
-								values="正向";
-							}else if(value==1){
-								values="逆时针90度";
-							}else if(value==2){
-								values="逆时针180度";
-							}else if(value==3){
-								values="逆时针270度";
+						    var values = '';
+							if(null!=value&&value.length>35){
+							 values = value.substring(0,35)+"...";
 							}else{
-								values="未知朝向";
+							 values = value;
 							}
 							return values;
 						}
 					},{
-						field : 'errorCode',
+						field : 'classifyCnt',
+						title : '识别手势个数',
+						width:80
+					},{
+						field : 'confidence',
+						title : '手势置信度',
+						width:80
+					},{
+						field : 'age',
+						title : '人脸年龄',
+						width:80
+					},{
+						field : 'beauty',
+						title : '魅力值',
+						width:80
+					},{
+						field : 'errorcode',
 						title : '错误对应码',
 						width:100,
 						visible:false
 					},{
-						field : 'errorMsg',
+						field : 'errormsg',
 						title : '错误描述',
 						width:100,
 						visible:false
@@ -191,8 +182,8 @@ var prefix = "<%=basePath%>";
 						align : 'center',
 						width:130,
 						formatter : function(value, row, index) {
-							var e = '<a  class="btn btn-primary btn-sm ' + s_edit_h + '"  title="查看详情" onclick="view(\''+ row.ocrId+ '\')"><i class="fa fa-edit "></i></a> ';
-							var d = '<a class="btn btn-warning btn-sm ' + s_edit_h + '" " title="删除"  onclick="remove(\''+ row.ocrId+'\')"><i class="fa fa-remove"></i></a> ';
+							var e = '<a  class="btn btn-primary btn-sm ' + s_edit_h + '"  title="查看详情" onclick="view(\''+ row.youtuId+ '\')"><i class="fa fa-edit "></i></a> ';
+							var d = '<a class="btn btn-warning btn-sm ' + s_edit_h + '" " title="删除"  onclick="remove(\''+ row.youtuId+'\')"><i class="fa fa-remove"></i></a> ';
 							return e+d;
 						}
 					} ]
@@ -206,7 +197,7 @@ var prefix = "<%=basePath%>";
 		layer.confirm('确定要删除选中的内容？', {btn : [ '确定', '取消' ]
 		}, function() {
 			$.ajax({
-				url : prefix + "bdocr/removeOcrGeneral",
+				url : prefix + "youtu/removeYouTuFuse",
 				type : "post",
 				data : {
 					'id' : id
@@ -241,7 +232,7 @@ var prefix = "<%=basePath%>";
 						data : {
 							"ids" : ids
 						},
-						url : prefix + 'bdocr/batchRemoveOcrGeneral',
+						url : prefix + 'youtu/batchRemoveYouTuFuse',
 						success : function(r) {
 							if (r.code == 0) {
 								layer.msg(r.msg,{icon:1});

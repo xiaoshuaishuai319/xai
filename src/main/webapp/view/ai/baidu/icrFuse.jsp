@@ -153,7 +153,11 @@ var prefix = "<%=basePath%>";
 					},{
 						field : 'nikeName',
 						title : '微信昵称',
-						width:100
+						width:100,
+						formatter:function (value,row,index) {
+							var a = decodeURIComponent(value);
+							return a;
+                        }						
 					},{
 						field : 'apiType',
 						title : '接口类型',

@@ -40,7 +40,7 @@
 		<dependency>
 		    <groupId>com.baidu.aip</groupId>
 		    <artifactId>java-sdk</artifactId>
-		    <version>4.3.0</version>
+		    <version>4.4.0</version>
 		</dependency>
   		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15 -->
 		<dependency>
@@ -189,7 +189,7 @@
 		<dependency>
 		    <groupId>cn.xsshome</groupId>
 		    <artifactId>taip</artifactId>
-		    <version>4.1.0</version>
+		    <version>4.2.2</version>
 		</dependency>
 	    <dependency>
 	        <groupId>javax.mail</groupId>

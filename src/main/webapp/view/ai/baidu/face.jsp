@@ -244,7 +244,11 @@ var prefix = "<%=basePath%>";
 					{
 						field : 'nikeName',
 						title : '微信昵称',
-						width:70
+						width:70,
+						formatter:function (value,row,index) {
+							var a = decodeURIComponent(value);
+							return a;
+                        }						
 					},{
 						title : '操作',
 						field : 'id',

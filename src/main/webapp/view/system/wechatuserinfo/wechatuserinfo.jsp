@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>文字识别</title>
+    <title>微信用户</title>
     <jsp:include page="/common/header.jsp"></jsp:include>
     <link href="<%=basePath%>/bootstrap/css/layui.css" rel="stylesheet">
     <style type="text/css">
@@ -70,7 +70,7 @@ var prefix = "<%=basePath%>";
  function load() {
 	$('#exampleTable').bootstrapTable({
 				method : 'get', // 服务器数据的请求方式 get or post
-				url : prefix + "bdocr/listOcrGeneral", // 服务器数据的加载地址
+				url : prefix + "wechat/listUserInfo", // 服务器数据的加载地址
 				iconSize : 'outline',
 				toolbar : '#exampleToolbar',
 				striped : true, // 设置为true会有隔行变色效果
@@ -90,7 +90,7 @@ var prefix = "<%=basePath%>";
 						// 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 						limit : params.limit,
 						offset : params.offset,
-						nikeName : $('#nikeName').val()
+						nickName : $('#nikeName').val()
 					};
 				},
 				columns : [
@@ -104,96 +104,69 @@ var prefix = "<%=basePath%>";
 					{
 						checkbox : true
 					},{
-						field : 'ocrId', // 列字段名
+						field : 'id', // 列字段名
 						title : '序号', // 列标题,
 						visible:false,
 						width:50
 					},{
-						field : 'logId',
-						title : '日志ID',
-						visible:false,
-						width:100
+						field : 'openId',
+						title : 'openId',
+						width:150
 					},{
-						field : 'imagePath',
-						title : '识别的图片',
+						field : 'avatarUrl',
+						title : '用户头像',
 						width:70,
 						formatter:function (value,row,index) {
-							var values='.'+value;
-							var a = '<img class="faceimage" src="'+values+'" width="66px" height="66px" onerror="this.src=\'./image/loadfail.png\'">';
+							var a = '<img class="faceimage" src="'+value+'" width="66px" height="66px" onerror="this.src=\'./image/loadfail.png\'">';
 							return a;
                         }						
 					},{
-						field : 'words',
-						title : '识别的内容',
+						field : 'nickName',
+						title : '微信昵称',
 						width:110,
-						formatter:function(value,row,index){
-							var values = value.substring(0,35)+"...";
-							return values;
-						}
+						formatter:function (value,row,index) {
+							var a = decodeURIComponent(value);
+							return a;
+                        }
 					},{
-						field : 'wordsResultNum',
-						title : '识别个数',
-						width:80
-					},{
-						field : 'direction',
-						title : '图片朝向',
+						field : 'gender',
+						title : '性别',
 						width:100,
 						formatter:function(value,row,index){
 							var values = "";
-							if(value==-1){
-								values="未定义";
+							if(value==1){
+								values="男";
 							}else if(value==0){
-								values="正向";
-							}else if(value==1){
-								values="逆时针90度";
-							}else if(value==2){
-								values="逆时针180度";
-							}else if(value==3){
-								values="逆时针270度";
+								values="女";
 							}else{
-								values="未知朝向";
+								values="未知";
 							}
 							return values;
 						}
 					},{
-						field : 'errorCode',
-						title : '错误对应码',
-						width:100,
-						visible:false
-					},{
-						field : 'errorMsg',
-						title : '错误描述',
-						width:100,
-						visible:false
-					},{
-						field : 'enterType',
-						title : '访问类型',
+						field : 'language',
+						title : '用户语言设置',
 						width:80
 					},{
-						field : 'apiType',
-						title : '接口类型',
+						field : 'city',
+						title : '城市',
 						width:80
 					},{
-						field : 'openId',
-						title : '微信openid',
-						width:110
+						field : 'province',
+						title : '省份',
+						width:80
 					},{
-						field : 'nikeName',
-						title : '微信昵称',
-						width:70,
-						formatter:function (value,row,index) {
-							var a = decodeURIComponent(value);
-							return a;
-                        }						
+						field : 'country',
+						title : '国家',
+						width:80
 					},{
 						title : '操作',
-						field : 'id',
 						align : 'center',
 						width:130,
 						formatter : function(value, row, index) {
 							var e = '<a  class="btn btn-primary btn-sm ' + s_edit_h + '"  title="查看详情" onclick="view(\''+ row.ocrId+ '\')"><i class="fa fa-edit "></i></a> ';
-							var d = '<a class="btn btn-warning btn-sm ' + s_edit_h + '" " title="删除"  onclick="remove(\''+ row.ocrId+'\')"><i class="fa fa-remove"></i></a> ';
-							return e+d;
+							var d = '<a class="btn btn-warning btn-sm ' + s_edit_h + '" " title="删除"  onclick="remove(\''+ row.id+'\')"><i class="fa fa-remove"></i></a> ';
+							return d;
 						}
 					} ]
 			});
@@ -206,7 +179,7 @@ var prefix = "<%=basePath%>";
 		layer.confirm('确定要删除选中的内容？', {btn : [ '确定', '取消' ]
 		}, function() {
 			$.ajax({
-				url : prefix + "bdocr/removeOcrGeneral",
+				url : prefix + "wechat/removeUserInfo",
 				type : "post",
 				data : {
 					'id' : id
@@ -233,7 +206,7 @@ var prefix = "<%=basePath%>";
 			}, function() {
 			var ids = new Array();
 			$.each(rows, function(i, row) {
-						ids[i] = row['ocrId'];
+						ids[i] = row['id'];
 					});
 					console.log(ids);
 					$.ajax({
@@ -241,7 +214,7 @@ var prefix = "<%=basePath%>";
 						data : {
 							"ids" : ids
 						},
-						url : prefix + 'bdocr/batchRemoveOcrGeneral',
+						url : prefix + 'wechat/batchRemoveUserInfos',
 						success : function(r) {
 							if (r.code == 0) {
 								layer.msg(r.msg,{icon:1});

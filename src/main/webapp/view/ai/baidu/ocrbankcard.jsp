@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>文字识别</title>
+    <title>文字识别-银行卡识别</title>
     <jsp:include page="/common/header.jsp"></jsp:include>
     <link href="<%=basePath%>/bootstrap/css/layui.css" rel="stylesheet">
     <style type="text/css">
@@ -70,7 +70,7 @@ var prefix = "<%=basePath%>";
  function load() {
 	$('#exampleTable').bootstrapTable({
 				method : 'get', // 服务器数据的请求方式 get or post
-				url : prefix + "bdocr/listOcrGeneral", // 服务器数据的加载地址
+				url : prefix + "bdocr/listOcrBankCard", // 服务器数据的加载地址
 				iconSize : 'outline',
 				toolbar : '#exampleToolbar',
 				striped : true, // 设置为true会有隔行变色效果
@@ -114,57 +114,38 @@ var prefix = "<%=basePath%>";
 						visible:false,
 						width:100
 					},{
-						field : 'imagePath',
-						title : '识别的图片',
-						width:70,
-						formatter:function (value,row,index) {
-							var values='.'+value;
-							var a = '<img class="faceimage" src="'+values+'" width="66px" height="66px" onerror="this.src=\'./image/loadfail.png\'">';
-							return a;
-                        }						
+						field : 'bankCardNumber',
+						title : '银行卡卡号',
+						width:100
 					},{
-						field : 'words',
-						title : '识别的内容',
-						width:110,
-						formatter:function(value,row,index){
-							var values = value.substring(0,35)+"...";
-							return values;
-						}
-					},{
-						field : 'wordsResultNum',
-						title : '识别个数',
-						width:80
-					},{
-						field : 'direction',
-						title : '图片朝向',
+						field : 'bankCardType',
+						title : '银行卡类型',
 						width:100,
 						formatter:function(value,row,index){
 							var values = "";
-							if(value==-1){
-								values="未定义";
-							}else if(value==0){
-								values="正向";
+							if(value==0){
+								values="不能识别";
 							}else if(value==1){
-								values="逆时针90度";
+								values="借记卡";
 							}else if(value==2){
-								values="逆时针180度";
-							}else if(value==3){
-								values="逆时针270度";
+								values="信用卡";
 							}else{
-								values="未知朝向";
+								values="未知类型";
 							}
 							return values;
 						}
 					},{
+						field : 'bankName',
+						title : '银行名',
+						width:100
+					},{
 						field : 'errorCode',
 						title : '错误对应码',
-						width:100,
-						visible:false
+						width:100
 					},{
 						field : 'errorMsg',
 						title : '错误描述',
-						width:100,
-						visible:false
+						width:100
 					},{
 						field : 'enterType',
 						title : '访问类型',
@@ -206,7 +187,7 @@ var prefix = "<%=basePath%>";
 		layer.confirm('确定要删除选中的内容？', {btn : [ '确定', '取消' ]
 		}, function() {
 			$.ajax({
-				url : prefix + "bdocr/removeOcrGeneral",
+				url : prefix + "bdocr/removeOcrBankCard",
 				type : "post",
 				data : {
 					'id' : id
@@ -241,7 +222,7 @@ var prefix = "<%=basePath%>";
 						data : {
 							"ids" : ids
 						},
-						url : prefix + 'bdocr/batchRemoveOcrGeneral',
+						url : prefix + 'bdocr/batchRemoveOcrBankCard',
 						success : function(r) {
 							if (r.code == 0) {
 								layer.msg(r.msg,{icon:1});
