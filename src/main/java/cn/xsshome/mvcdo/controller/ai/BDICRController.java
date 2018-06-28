@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.xsshome.mvcdo.common.Constant;
+import cn.xsshome.mvcdo.common.AIConstant;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRDishDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRFuseDO;
 import cn.xsshome.mvcdo.service.ai.baidu.BDICRDetectService;
@@ -72,7 +72,7 @@ public class BDICRController {
 	public WholeResponse removeDish(Long id,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if (bdicrDetectService.removeDish(id) > 0) {
@@ -92,7 +92,7 @@ public class BDICRController {
 	public WholeResponse remove(@RequestParam("ids[]") Long[] faceId,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			bdicrDetectService.batchRemoveDish(faceId);
@@ -135,7 +135,7 @@ public class BDICRController {
 	public WholeResponse removeFuse(Long id,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if (bdicrDetectService.removeFuse(id) > 0) {
@@ -155,7 +155,7 @@ public class BDICRController {
 	public WholeResponse removeFuse(@RequestParam("ids[]") Long[] icrIds,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			bdicrDetectService.batchRemoveFuse(icrIds);

@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
-import com.baidu.aip.client.BaseClient;
 import com.baidu.aip.error.AipError;
 import com.baidu.aip.http.AipRequest;
 import com.baidu.aip.imageclassify.AipImageClassify;

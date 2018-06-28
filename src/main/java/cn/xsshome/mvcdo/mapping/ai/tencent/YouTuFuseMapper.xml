@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xsshome.mvcdo.dao.ai.tencent.YouTuFuseDao">
+	<!-- 查询单个对象 -->
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.ai.tencent.dbo.YouTuDetectFuseDO">
+		select youtuId,errorcode,errormsg,sessionId,label,confidence,itemstring,faceId,age,gender,expression,glasses,beauty,hat,mask,openId,nikeName,imagePath,enterType,apiType,classifyCnt from ai_yt_fuse where youtuId = #{youtuId} 
+	</select>
+	<!-- 查询所有 -->
+	<select id="listYouTuFuse" resultType="cn.xsshome.mvcdo.pojo.ai.tencent.dbo.YouTuDetectFuseDO">
+	select
+	youtuId,errorcode,errormsg,sessionId,label,confidence,itemstring,faceId,age,gender,expression,glasses,beauty,hat,mask,openId,nikeName,imagePath,enterType,apiType,classifyCnt
+	from ai_yt_fuse
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by youtuId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计 -->
+ 	<select id="countYouTuFuse" resultType="int">
+	select count(*) from ai_yt_fuse
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+	</where>
+	</select>
+	<!-- 插入 -->
+	<insert id="saveYouTuFuse" parameterType="cn.xsshome.mvcdo.pojo.ai.tencent.dbo.YouTuDetectFuseDO" useGeneratedKeys="true" keyProperty="youtuId">
+		insert into ai_yt_fuse
+		(
+		     errorcode,errormsg,sessionId,label,confidence,itemstring,faceId,age,gender,expression,glasses,beauty,hat,mask,openId,nikeName,imagePath,enterType,apiType,classifyCnt
+		)
+		values
+		(
+			#{errorcode}, 
+			#{errormsg}, 
+			#{sessionId}, 
+			#{label}, 
+			#{confidence}, 
+			#{itemstring}, 
+			#{faceId}, 
+			#{age}, 
+			#{gender},
+			#{expression}, 
+			#{glasses},
+			#{beauty}, 
+			#{hat},
+			#{mask}, 
+			#{openId},
+			#{nikeName},
+			#{imagePath},
+			#{enterType},
+			#{apiType},
+			#{classifyCnt}
+		)
+	</insert>
+	<!-- 单个删除 -->
+	<delete id="removeYouTuFuse">
+		delete from ai_yt_fuse where youtuId = #{youtuId}
+	</delete>
+	<!-- 批量删除 -->
+	<delete id="batchRemoveYouTuFuse">
+		delete from ai_yt_fuse where youtuId in 
+		<foreach item="youtuId" collection="array" open="(" separator="," close=")">
+			#{youtuId}
+		</foreach>
+	</delete>
+</mapper>

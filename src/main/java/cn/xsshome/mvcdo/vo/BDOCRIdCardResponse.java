@@ -50,6 +50,10 @@ public class BDOCRIdCardResponse extends RestResponse{
 	 * 风险类型
 	 */
 	private String riskType;
+	/**
+	 * 接口类型
+	 */
+	private String ocrType;
 	public String getAddress() {
 		return address;
 	}
@@ -116,5 +120,10 @@ public class BDOCRIdCardResponse extends RestResponse{
 	public void setRiskType(String riskType) {
 		this.riskType = riskType;
 	}
-	
+	public String getOcrType() {
+		return ocrType;
+	}
+	public void setOcrType(String ocrType) {
+		this.ocrType = ocrType;
+	}
 }

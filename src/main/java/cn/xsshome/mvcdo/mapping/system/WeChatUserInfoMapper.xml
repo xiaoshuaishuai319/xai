@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xsshome.mvcdo.dao.system.WechatUserInfoDao">
+	<!-- 查询单个对象 -->
+	<select id="get" resultType="cn.xsshome.mvcdo.pojo.system.WeChatUserInfoDO">
+		select id,openId,nickName,gender,language,city,province,country,avatarUrl from wechat_userinfo where openId = #{openId} 
+	</select>
+	<!-- 查询所有 -->
+	<select id="list" resultType="cn.xsshome.mvcdo.pojo.system.WeChatUserInfoDO">
+	select
+	id,openId,nickName,gender,language,city,province,country,avatarUrl
+	from wechat_userinfo
+	<where>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nickName != null and nickName != ''"> and nickName = #{nickName} </if>
+		<if test="city != null and city != ''"> and city = #{city} </if>
+		<if test="province != null and province != ''"> and province = #{province} </if>
+		<if test="country != null and country != ''"> and country = #{country} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计 -->
+ 	<select id="count" resultType="int">
+	select count(*) from wechat_userinfo
+	<where>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nickName != null and nickName != ''"> and nickName = #{nickName} </if>
+		<if test="city != null and city != ''"> and city = #{city} </if>
+		<if test="province != null and province != ''"> and province = #{province} </if>
+		<if test="country != null and country != ''"> and country = #{country} </if>
+	</where>
+	</select>
+	<!-- 插入 -->
+	<insert id="save" parameterType="cn.xsshome.mvcdo.pojo.system.WeChatUserInfoDO" useGeneratedKeys="true" keyProperty="id">
+		insert into wechat_userinfo
+		(openId,nickName,gender,language,city,province,country,avatarUrl)
+		values
+		(#{openId}, #{nickName}, #{gender}, #{language}, #{city}, #{province}, #{country}, #{avatarUrl})
+	</insert>
+	<!-- 单个删除 -->
+	<delete id="remove">
+		delete from wechat_userinfo where id = #{id}
+	</delete>
+	<!-- 批量删除 -->
+	<delete id="batchRemove">
+		delete from wechat_userinfo where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<!-- 更新微信用户信息 -->
+	<update id="updateWechatUserInfo" parameterType="cn.xsshome.mvcdo.pojo.system.WeChatUserInfoDO">
+		update wechat_userinfo
+		<set>
+			<if test="nickName != null">nickName = #{nickName}, </if>
+			<if test="gender != null">gender = #{gender}, </if>
+			<if test="language != null">language = #{language}, </if>
+			<if test="city != null">city = #{city}, </if>
+			<if test="province != null">province = #{province}, </if>
+			<if test="country != null">country = #{country}, </if>
+			<if test="avatarUrl != null">avatarUrl = #{avatarUrl}</if>
+		</set>
+		where openId = #{openId}
+	</update>
+	
+</mapper>

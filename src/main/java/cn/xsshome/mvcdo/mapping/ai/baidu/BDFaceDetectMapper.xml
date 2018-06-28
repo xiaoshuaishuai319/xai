@@ -5,6 +5,10 @@
 	<select id="get" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO">
 		select faceId,errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath from ai_bd_face where faceId = #{faceId} 
 	</select>
+	<!-- 查询单个对象ByFaceToken -->
+	<select id="getFaceByToken" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO">
+		select faceId,errorCode,errorMsg,logId,timestamp,cached,faceNum,faceToken,faceProbability,age,beauty,expressionType,faceShapeType,gender,glassesType,raceType,openId,nikeName,imagePath from ai_bd_face where faceToken = #{face_token} 
+	</select>
 	<!-- 查询所有 -->
 	<select id="list" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO">
 	select

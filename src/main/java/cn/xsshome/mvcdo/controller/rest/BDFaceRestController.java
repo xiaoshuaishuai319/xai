@@ -1,5 +1,6 @@
 package cn.xsshome.mvcdo.controller.rest;
 
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +25,6 @@ import com.baidu.aip.face.AipFace;
 import com.baidu.aip.util.Base64Util;
 
 import cn.xsshome.mvcdo.common.AIConstant;
-import cn.xsshome.mvcdo.common.Constant;
 import cn.xsshome.mvcdo.interceptor.BDFactory;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.po.FaceV3DetectBean;
@@ -66,6 +67,8 @@ public class BDFaceRestController {
     @RequestMapping(value = "/detect",method = {RequestMethod.POST})
     public String uploadDetectFace(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request, HttpServletResponse response){
         String clientType = request.getParameter("clientType");
+        String openId = ServletRequestUtils.getStringParameter(request, "openId","");
+        String nickName = ServletRequestUtils.getStringParameter(request, "nickName","");
         logger.info("=======访问的IP"+request.getRemoteAddr()+"======访问的User-Agent:"+request.getHeader("User-Agent"));
         logger.info("=======访问的类型"+clientType);
         String resultData = "";
@@ -75,25 +78,28 @@ public class BDFaceRestController {
         String filePath = request.getSession().getServletContext().getRealPath(perfix);
         logger.info("=======保存的路径"+filePath+"/"+fileName);
         try {
-            if(!clientType.equals("web")){
-        		 BdFaceResponse bdFaceResponse = new BdFaceResponse();
-                 bdFaceResponse.setCode(BDConstant.BD_NOTFUND.getCode().toString());
-                 bdFaceResponse.setMsg(BDConstant.BD_NOTFUND.getMsg());
-                 resultData = JSON.toJSONString(bdFaceResponse);
-                 logger.info("=====接口返回的内容:"+resultData);
-                 PrintUtil.printJson(response,resultData);
+        	nickName = URLEncoder.encode(nickName, "UTF-8");
+            if(clientType.equals("web")){
+            	if(request.getHeader("User-Agent")==null){
+	    		 BdFaceResponse bdFaceResponse = new BdFaceResponse();
+	             bdFaceResponse.setCode(BDConstant.BD_NOTFUND.getCode().toString());
+	             bdFaceResponse.setMsg(BDConstant.BD_NOTFUND.getMsg());
+	             resultData = JSON.toJSONString(bdFaceResponse);
+	             logger.info("=====接口返回的内容:"+resultData);
+	             PrintUtil.printJson(response,resultData);
+            	}
             }else if(clientType!=null&&clientType.equals("wcs")){
               String authCode = request.getParameter("authCode");
               logger.info("=======authCode:"+authCode);
-            	if(!authCode.equals(Constant.AUTH_CODE)){
-            		 BdFaceResponse bdFaceResponse = new BdFaceResponse();
+                if(null==authCode||!authCode.equals(AIConstant.AUTH_CODE)){
+                	 BdFaceResponse bdFaceResponse = new BdFaceResponse();
                      bdFaceResponse.setCode(BDConstant.BD_NOTFUND.getCode().toString());
                      bdFaceResponse.setMsg(BDConstant.BD_NOTFUND.getMsg());
                      resultData = JSON.toJSONString(bdFaceResponse);
                      logger.info("=====接口返回的内容:"+resultData);
                      PrintUtil.printJson(response,resultData);
-            	}
-            }else{
+                }
+            }
             FileUtil.uploadFile(file.getBytes(),filePath,fileName);
             //图片的本地路径
             String imagePath = filePath+fileName;
@@ -107,8 +113,15 @@ public class BDFaceRestController {
                 BDFaceDetectDO faceBdDO = new BDFaceDetectDO();
                 dbPath += fileName;
                 faceBdDO = getFaceBdDO(faceBDJSON,dbPath);
-                int result =bdFaceDetectService.save(faceBdDO);
-                System.out.println("保存成功了 "+result);
+                faceBdDO.setOpenId(openId);
+                faceBdDO.setNikeName(nickName);
+                BDFaceDetectDO dbface = bdFaceDetectService.getFaceByToken(faceBDJSON.getResult().getFace_list().get(0).getFace_token());
+                if(dbface!=null){
+                	//已经存在 暂时不做任何修改
+                }else{
+                   int result =bdFaceDetectService.save(faceBdDO);
+                   System.out.println("保存成功了 "+result);
+                }
                 BdFaceResponse bdFaceResponse = new BdFaceResponse();
                 bdFaceResponse.setCode(BDConstant.BD_SUCCESS.getCode().toString());
                 bdFaceResponse.setMsg(BDConstant.BD_SUCCESS.getMsg());
@@ -136,7 +149,6 @@ public class BDFaceRestController {
                 System.out.println(resultData);
                 PrintUtil.printJson(response,resultData);
             }
-            } 
         }catch (Exception e){
         	e.printStackTrace();
             System.out.println("人脸检测百度接口出错了"+e.getMessage());

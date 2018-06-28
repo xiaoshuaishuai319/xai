@@ -9,6 +9,10 @@ public class BDOCRGeneralResponse extends RestResponse{
 	 * 识别结果数，表示words_result的元素个数
 	 */
 	private Integer wordsesultNum;
+	/**
+	 * 接口类型
+	 */
+	private String ocrType;
 	public String getWords() {
 		return words;
 	}
@@ -21,5 +25,10 @@ public class BDOCRGeneralResponse extends RestResponse{
 	public void setWordsesultNum(Integer wordsesultNum) {
 		this.wordsesultNum = wordsesultNum;
 	}
-	
+	public String getOcrType() {
+		return ocrType;
+	}
+	public void setOcrType(String ocrType) {
+		this.ocrType = ocrType;
+	}
 }

@@ -19,4 +19,5 @@ public interface BDFaceDetectDao {
 	int save(BDFaceDetectDO detectDO);
 	int remove(Long cid);
 	int batchRemove(Long[] cids);
+	BDFaceDetectDO getFaceByToken(String face_token);
 }

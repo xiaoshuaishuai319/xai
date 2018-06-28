@@ -138,4 +138,68 @@
 			#{ocrId}
 		</foreach>
 	</delete>
+	
+	<!-- 查询所有银行卡文字识别 -->
+	<select id="listOcrBankCard" resultType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRBankCardDO">
+	select
+	ocrId,logId,errorCode,errorMsg,bankCardNumber,bankCardType,bankName,imagePath,openId,nikeName,enterType,apiType
+	from ai_bd_ocrbankcard
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by ocrId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit ${offset}, ${limit}
+		</if>
+	</select>
+	<!-- 统计银行卡文字识别 -->
+ 	<select id="countOcrBankCard" resultType="int">
+	select count(*) from ai_bd_ocrbankcard
+	<where>
+		<if test="apiType != null and apiType != ''"> and apiType = #{apiType} </if>
+		<if test="enterType != null and enterType != ''"> and enterType = #{enterType} </if>
+		<if test="openId != null and openId != ''"> and openId = #{openId} </if>
+		<if test="nikeName != null and nikeName != ''"> and nikeName = #{nikeName} </if>
+	</where>
+	</select>
+	<!-- 插入银行卡文字识别 -->
+	<insert id="saveOcrBankCard" parameterType="cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRBankCardDO" useGeneratedKeys="true" keyProperty="ocrId">
+		insert into ai_bd_ocrbankcard
+		(logId,errorCode,errorMsg,bankCardNumber,bankCardType,bankName,imagePath,openId,nikeName,enterType,apiType)
+		values
+		(
+			#{logId}, 
+			#{errorCode}, 
+			#{errorMsg}, 
+			#{bankCardNumber}, 
+			#{bankCardType}, 
+			#{bankName},
+			#{imagePath}, 
+			#{openId},
+			#{nikeName},
+			#{enterType},
+			#{apiType}
+		)
+	</insert>
+	<!-- 单个删除银行卡文字识别 -->
+	<delete id="removeOcrBankCard">
+		delete from ai_bd_ocrbankcard where ocrId = #{ocrId}
+	</delete>
+	<!-- 批量删除银行卡文字识别 -->
+	<delete id="batchRemoveOcrBankCard">
+		delete from ai_bd_ocrbankcard where ocrId in 
+		<foreach item="ocrId" collection="array" open="(" separator="," close=")">
+			#{ocrId}
+		</foreach>
+	</delete>
 </mapper>

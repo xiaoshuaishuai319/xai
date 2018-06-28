@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.xsshome.mvcdo.common.Constant;
+import cn.xsshome.mvcdo.common.AIConstant;
+import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRBankCardDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRGeneralDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRIdCardDO;
 import cn.xsshome.mvcdo.service.ai.baidu.BDOCRDetectService;
@@ -71,7 +72,7 @@ public class BDOCRController {
 	public WholeResponse removeOcrGeneral(Long id,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if (bdocrDetectService.removeOcrGeneral(id) > 0) {
@@ -91,7 +92,7 @@ public class BDOCRController {
 	public WholeResponse batchRemoveOcrGeneral(@RequestParam("ids[]") Long[] ocrId,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			bdocrDetectService.batchRemoveOcrGeneral(ocrId);
@@ -134,7 +135,7 @@ public class BDOCRController {
 	public WholeResponse removeOcrIdCard(Long id,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if (bdocrDetectService.removeOcrIdCard(id) > 0) {
@@ -154,13 +155,77 @@ public class BDOCRController {
 	public WholeResponse batchRemoveOcrIdCard(@RequestParam("ids[]") Long[] ocrId,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			bdocrDetectService.batchRemoveOcrIdCard(ocrId);
 			return WholeResponse.successResponse("批量删除成功");
 		} catch (Exception e) {
 			logger.error("批量删除博文出错"+e.getMessage());
+			return WholeResponse.errorResponse("500", "系统异常");
+		}
+	}
+	
+	/**
+	 * 跳转百度文字bankcard识别管理页面 
+	 * @param request request对象
+	 * @param response response对象
+	 * @return 页面
+	 */
+	@RequestMapping(value="/indexOcrBankCard")
+	public String indexOcrBankCard(HttpServletRequest request,HttpServletResponse response){
+		logger.info("index跳转文字bankcard识别管理页面");
+		return "ai/baidu/ocrbankcard";
+	}
+	/**
+	 * 加载百度bankcard文字识别数据
+	 * @param params
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("/listOcrBankCard")
+	public PageUtils listOcrBankCard(@RequestParam Map<String, Object> params) {
+		Query query = new Query(params);
+		List<BDOCRBankCardDO> detectDOs = bdocrDetectService.listOcrBankCard(query);
+		int total = bdocrDetectService.countOcrIdCard(query);
+		PageUtils pageUtils = new PageUtils(detectDOs, total);
+		return pageUtils;
+	}
+	/**
+	 * 删除bankcard
+	 */
+	@PostMapping("/removeOcrBankCard")
+	@ResponseBody
+	public WholeResponse removeOcrBankCard(Long id,HttpServletRequest request,HttpServletResponse response) {
+		try {
+			HttpSession session = request.getSession();
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
+			}
+			if (bdocrDetectService.removeOcrBankCard(id) > 0) {
+				return WholeResponse.successResponse("删除成功");
+			}
+		} catch (Exception e) {
+			logger.error("remove出错"+e.getMessage());
+			return WholeResponse.errorResponse("500", "系统异常");
+		}
+		return null;
+	}
+	/**
+	 * 批量删除bankcard
+	 */
+	@PostMapping("/batchRemoveOcrBankCard")
+	@ResponseBody
+	public WholeResponse batchRemoveOcrBankCard(@RequestParam("ids[]") Long[] ocrId,HttpServletRequest request,HttpServletResponse response) {
+		try {
+			HttpSession session = request.getSession();
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
+			}
+			bdocrDetectService.batchRemoveBankIdCard(ocrId);
+			return WholeResponse.successResponse("批量删除成功");
+		} catch (Exception e) {
+			logger.error("批量删除出错"+e.getMessage());
 			return WholeResponse.errorResponse("500", "系统异常");
 		}
 	}

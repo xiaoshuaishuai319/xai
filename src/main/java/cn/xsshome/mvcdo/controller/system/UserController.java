@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.xsshome.mvcdo.common.Constant;
+import cn.xsshome.mvcdo.common.AIConstant;
 import cn.xsshome.mvcdo.common.Tree;
 import cn.xsshome.mvcdo.pojo.system.DeptDO;
 import cn.xsshome.mvcdo.pojo.system.RoleDO;
@@ -114,7 +114,7 @@ public class UserController {
 	public WholeResponse saveUser(UserDO userDO,HttpServletRequest request){
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if(userService.save(userDO)>0){
@@ -140,7 +140,7 @@ public class UserController {
 		logger.info("updateUser用户更新");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许修改数据");
 			}
 			if(userService.update(userDO)>0){
@@ -166,7 +166,7 @@ public class UserController {
 		logger.info("removeUser用户删除");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许删除数据");
 			}
 			if(userService.remove(id)>0){
@@ -192,7 +192,7 @@ public class UserController {
 		logger.info("batchRemoveUser用户批量删除");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许批量删除数据");
 			}
 			if(userService.batchremove(ids)>0){
@@ -234,7 +234,7 @@ public class UserController {
 		logger.info("restPwd重置密码");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许执行重置密码");
 			}
 			if(userService.resetPwd(userDO)>0){
@@ -262,7 +262,7 @@ public class UserController {
 		logger.info("updatePwd更新密码  旧密码=="+pwdOld+"===新密码==="+pwdNew);
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许执行重置密码");
 			}
 			UserDO dbUserDO = userService.get(userDO.getUserId());
@@ -344,7 +344,7 @@ public class UserController {
 	public WholeResponse updatePersonal(UserDO userDO,HttpServletRequest request){
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许修改数据");
 			}
 			if(userService.updatePersonal(userDO)>0){

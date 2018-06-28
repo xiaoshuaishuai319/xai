@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.xsshome.mvcdo.common.Constant;
+import cn.xsshome.mvcdo.common.AIConstant;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDFaceDetectDO;
 import cn.xsshome.mvcdo.service.ai.baidu.BDFaceDetectService;
 import cn.xsshome.mvcdo.util.PageUtils;
@@ -69,7 +69,7 @@ public class BDFACEController {
 	public WholeResponse remove(Long id,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if (bdFaceDetectService.remove(id) > 0) {
@@ -89,7 +89,7 @@ public class BDFACEController {
 	public WholeResponse remove(@RequestParam("ids[]") Long[] faceId,HttpServletRequest request,HttpServletResponse response) {
 		try {
 			HttpSession session = request.getSession();
-			if (Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
+			if (AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))) {
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			bdFaceDetectService.batchRemove(faceId);

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.xsshome.mvcdo.common.Constant;
+import cn.xsshome.mvcdo.common.AIConstant;
 import cn.xsshome.mvcdo.common.Tree;
 import cn.xsshome.mvcdo.pojo.system.DeptDO;
 import cn.xsshome.mvcdo.service.system.DeptService;
@@ -76,7 +76,7 @@ public class DeptController {
 		try {
 			model.addAttribute("pId",pId);
 			if(pId==0){
-				model.addAttribute("pName", Constant.DEPT_ROOT_NAME);
+				model.addAttribute("pName", AIConstant.DEPT_ROOT_NAME);
 			}else{
 				model.addAttribute("pName",sysDeptService.get(pId).getName());
 			}
@@ -97,7 +97,7 @@ public class DeptController {
 	public WholeResponse saveDept(DeptDO deptDO,HttpServletRequest request,HttpServletResponse response){
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if(sysDeptService.save(deptDO)>0){
@@ -122,8 +122,8 @@ public class DeptController {
 		logger.info("editDept部门编辑 id参数为:"+id);
 		try {
 			DeptDO deptDO = sysDeptService.get(id);
-			if(Constant.DEPT_ROOT_ID.equals(deptDO.getParentId())) {
-				model.addAttribute("parentDeptName",Constant.DEPT_ROOT_NAME);
+			if(AIConstant.DEPT_ROOT_ID.equals(deptDO.getParentId())) {
+				model.addAttribute("parentDeptName",AIConstant.DEPT_ROOT_NAME);
 			}else {
 				DeptDO parDept = sysDeptService.get(deptDO.getParentId());
 				model.addAttribute("parentDeptName", parDept.getName());
@@ -148,7 +148,7 @@ public class DeptController {
 		logger.info("updateDept部门更新");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许修改数据");
 			}
 			if(sysDeptService.update(deptDO)>0){
@@ -174,7 +174,7 @@ public class DeptController {
 		logger.info("removeDept部门删除");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许删除数据");
 			}
 			if(sysDeptService.remove(deptId)>0){

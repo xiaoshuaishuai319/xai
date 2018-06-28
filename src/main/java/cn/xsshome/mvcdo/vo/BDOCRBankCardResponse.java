@@ -13,6 +13,10 @@ public class BDOCRBankCardResponse extends RestResponse{
 	 * 银行名
 	 */
 	private String bankName;
+	/**
+	 * 接口类型
+	 */
+	private String ocrType;
 	public String getBankCardNumber() {
 		return bankCardNumber;
 	}
@@ -30,5 +34,11 @@ public class BDOCRBankCardResponse extends RestResponse{
 	}
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
+	}
+	public String getOcrType() {
+		return ocrType;
+	}
+	public void setOcrType(String ocrType) {
+		this.ocrType = ocrType;
 	}
 }

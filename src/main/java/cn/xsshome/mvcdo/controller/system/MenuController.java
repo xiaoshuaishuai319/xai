@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.xsshome.mvcdo.common.Constant;
+import cn.xsshome.mvcdo.common.AIConstant;
 import cn.xsshome.mvcdo.common.Tree;
 import cn.xsshome.mvcdo.pojo.system.MenuDO;
 import cn.xsshome.mvcdo.service.system.MenuService;
@@ -93,7 +93,7 @@ public class MenuController {
 	public WholeResponse saveMenu(MenuDO menuDO,HttpServletRequest request,HttpServletResponse response){
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if(menuService.save(menuDO)>0){
@@ -145,7 +145,7 @@ public class MenuController {
 		logger.info("updateMenu菜单更新");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许修改数据");
 			}
 			if(menuService.update(menuDO)>0){
@@ -171,7 +171,7 @@ public class MenuController {
 		logger.info("removeMenu角色删除");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许删除数据");
 			}
 			if(menuService.remove(id)>0){

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.xsshome.mvcdo.common.Constant;
+import cn.xsshome.mvcdo.common.AIConstant;
 import cn.xsshome.mvcdo.pojo.system.RoleDO;
 import cn.xsshome.mvcdo.service.system.RoleService;
 import cn.xsshome.mvcdo.util.WholeResponse;
@@ -90,7 +90,7 @@ public class RoleController {
 	public WholeResponse saveRole(RoleDO role,HttpServletRequest request,HttpServletResponse response){
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许添加数据");
 			}
 			if(roleService.save(role)>0){
@@ -135,7 +135,7 @@ public class RoleController {
 		logger.info("updateRole角色更新");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许修改数据");
 			}
 			if(roleService.update(roleDO)>0){
@@ -161,7 +161,7 @@ public class RoleController {
 		logger.info("removeRole角色删除");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许删除数据");
 			}
 			if(roleService.remove(id)>0){
@@ -187,7 +187,7 @@ public class RoleController {
 		logger.info("batchRemoveRole角色批量删除");
 		try {
 			HttpSession session = request.getSession();
-			if(Constant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
+			if(AIConstant.DEMO_ACCOUNT.equals(session.getAttribute("username"))){
 				return WholeResponse.errorResponse("1", "测试账户不允许批量删除数据");
 			}
 			if(roleService.batchremove(ids)>0){

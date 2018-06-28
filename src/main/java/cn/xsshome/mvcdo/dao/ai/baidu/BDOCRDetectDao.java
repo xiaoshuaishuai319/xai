@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRBankCardDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRGeneralDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDOCRIdCardDO;
 /**
@@ -27,4 +28,10 @@ public interface BDOCRDetectDao {
 	int saveOcrIdCard(BDOCRIdCardDO bdocrIdCardDO);
 	int removeOcrIdCard(Long ocrId);
 	int batchRemoveOcrIdCard(Long[] ocrIds);
+	/**文字银行卡识别接口类**/
+	List<BDOCRBankCardDO> listOcrBankCard(Map<String, Object> map);
+	int countOcrBankCard(Map<String,Object> map);
+	int saveOcrBankCard(BDOCRBankCardDO bdocrBankCardDO);
+	int removeOcrBankCard(Long ocrId);
+	int batchRemoveBankIdCard(Long[] ocrIds);
 }

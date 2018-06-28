@@ -1,6 +1,7 @@
 package cn.xsshome.mvcdo.controller.rest;
 
 
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 
+import cn.xsshome.mvcdo.common.AIConstant;
 import cn.xsshome.mvcdo.common.AipAdded;
-import cn.xsshome.mvcdo.common.Constant;
 import cn.xsshome.mvcdo.interceptor.BDFactory;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRDishDO;
 import cn.xsshome.mvcdo.pojo.ai.baidu.dbo.BDICRFuseDO;
@@ -72,6 +74,8 @@ public class BDImageClassifyRestController {
     	 String resultData = "";
     	String clientType = request.getParameter("clientType");
         String apiType = request.getParameter("apiType");
+        String openId = ServletRequestUtils.getStringParameter(request, "openId","");
+        String nickName = ServletRequestUtils.getStringParameter(request, "nickName","");
         logger.info("=======访问的IP"+request.getRemoteAddr()+"======访问的User-Agent:"+request.getHeader("User-Agent"));
         logger.info("=======访问的类型"+clientType+"=======访问的接口类型"+apiType);
         if(null==clientType||null==apiType){
@@ -88,7 +92,8 @@ public class BDImageClassifyRestController {
         String filePath = request.getSession().getServletContext().getRealPath(perfix);
         logger.info("=======保存的路径"+filePath+"/"+fileName);
         try {
-			if(!clientType.equals("web")){
+        	nickName = URLEncoder.encode(nickName, "UTF-8");
+			if(clientType.equals("web")){
 				if(null==request.getHeader("User-Agent")){
 					 BDDishResponse bdDishResponse = new BDDishResponse();
 					 bdDishResponse.setCode(BDConstant.BD_403.getCode().toString());
@@ -106,7 +111,7 @@ public class BDImageClassifyRestController {
 				}
 			}else if (clientType!=null&&clientType.equals("wcs")) {
 				String authCode = request.getParameter("authCode");
-            	if(!authCode.equals(Constant.AUTH_CODE)){
+            	if(null==authCode||!authCode.equals(AIConstant.AUTH_CODE)){
             		BDDishResponse bdDishResponse = new BDDishResponse();
             		bdDishResponse.setCode(BDConstant.BD_NOTFUND.getCode().toString());
             		bdDishResponse.setMsg(BDConstant.BD_NOTFUND.getMsg());
@@ -114,7 +119,7 @@ public class BDImageClassifyRestController {
                     logger.info("=====接口返回的内容:"+resultData);
                     PrintUtil.printJson(response,resultData);
             	}
-			}else{
+			}
 				FileUtil.uploadFile(file.getBytes(),filePath,fileName);
 				 //图片的本地路径
 	            String imagePath = filePath+fileName;
@@ -125,14 +130,14 @@ public class BDImageClassifyRestController {
 		            BDICRDishBean bdDishJson = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), BDICRDishBean.class);
 		            logger.info("百度服务返回=======\n"+jsonObject.toString(2));
 		            dbPath += fileName;
-		            resultData = getResultDishData(bdDishJson,apiType,clientType,dbPath);
+		            resultData = getResultDishData(bdDishJson,apiType,clientType,dbPath,openId,nickName);
 		            logger.info("=====接口返回的内容:"+resultData);
 		            PrintUtil.printJson(response,resultData);
 	            } else if (apiType.equals("plant")||apiType.equals("animal")||apiType.equals("ingredient")||apiType.equals("logo")||apiType.equals("car")) {
 	            	JSONObject jsonObject = getFuseObject(imagePath,apiType,option);
 	            	BDICRFuseBean bdicrFuseBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), BDICRFuseBean.class);
 	            	dbPath += fileName;
-		            resultData = getResultFuseData(bdicrFuseBean,apiType,clientType,dbPath);
+		            resultData = getResultFuseData(bdicrFuseBean,apiType,clientType,dbPath,openId,nickName);
 		            logger.info("=====接口返回的内容:"+resultData);
 	                PrintUtil.printJson(response,resultData);
 				} else {
@@ -143,8 +148,6 @@ public class BDImageClassifyRestController {
 	                logger.info("=====接口返回的内容:"+resultData);
 	                PrintUtil.printJson(response,resultData);
 				}
-
-			}
 		} catch (Exception e) {
 			logger.info("图像识别百度接口出错了"+e.getMessage()+"====接口类型："+apiType);
 			BDDishResponse bdDishResponse = new BDDishResponse();
@@ -166,7 +169,7 @@ public class BDImageClassifyRestController {
      * @param dbPath 图片路径
      * @return
      */
-    private String getResultFuseData(BDICRFuseBean bdicrFuseBean, String apiType, String clientType, String dbPath) {
+    private String getResultFuseData(BDICRFuseBean bdicrFuseBean, String apiType, String clientType, String dbPath,String openId, String nickName) {
     	String resultData="";
     	if (apiType.equals("plant")||apiType.equals("animal")||apiType.equals("ingredient")) {
     		if(bdicrFuseBean.getResult().get(0).getName().equals("非动物")||bdicrFuseBean.getResult().get(0).getName().equals("非植物")||bdicrFuseBean.getResult().get(0).getName().equals("非果蔬食材")){
@@ -182,6 +185,8 @@ public class BDImageClassifyRestController {
     			fuseResponse.setIcrName(bdicrFuseBean.getResult().get(0).getName());
     			fuseResponse.setScore(getPercent(Double.parseDouble(bdicrFuseBean.getResult().get(0).getScore())*100));
     			BDICRFuseDO bdicrFuseDO = new BDICRFuseDO();
+    			bdicrFuseDO.setOpenId(openId);
+    			bdicrFuseDO.setNikeName(nickName);
     			bdicrFuseDO.setApiType(apiType);
     			bdicrFuseDO.setLogId(String.valueOf(bdicrFuseBean.getLog_id()));
     			if(apiType.equals("ingredient")){
@@ -210,6 +215,8 @@ public class BDImageClassifyRestController {
 	    			fuseResponse.setIcrName(bdicrFuseBean.getResult().get(0).getName());
 	    			fuseResponse.setProbability(getPercent(Double.parseDouble(bdicrFuseBean.getResult().get(0).getProbability())*100));
 	    			BDICRFuseDO bdicrFuseDO = new BDICRFuseDO();
+	    			bdicrFuseDO.setOpenId(openId);
+	    			bdicrFuseDO.setNikeName(nickName);
 	    			bdicrFuseDO.setApiType(apiType);
 	    			bdicrFuseDO.setLogId(String.valueOf(bdicrFuseBean.getLog_id()));
 	    			bdicrFuseDO.setResultNum(bdicrFuseBean.getResult_num());
@@ -242,6 +249,8 @@ public class BDImageClassifyRestController {
 	    			fuseResponse.setColorResult(bdicrFuseBean.getColor_result());
 	    			fuseResponse.setYear(bdicrFuseBean.getResult().get(0).getYear());
 	    			BDICRFuseDO bdicrFuseDO = new BDICRFuseDO();
+	    			bdicrFuseDO.setOpenId(openId);
+	    			bdicrFuseDO.setNikeName(nickName);
 	    			bdicrFuseDO.setApiType(apiType);
 	    			bdicrFuseDO.setLogId(String.valueOf(bdicrFuseBean.getLog_id()));
 	    			bdicrFuseDO.setIcrName(bdicrFuseBean.getResult().get(0).getName());
@@ -324,7 +333,7 @@ public class BDImageClassifyRestController {
      * @param dbPath 图片路径
      * @return
      */
-    private String getResultDishData(BDICRDishBean bdDishJson, String apiType, String clientType, String dbPath) {
+    private String getResultDishData(BDICRDishBean bdDishJson, String apiType, String clientType, String dbPath,String openId,String nickName) {
     	String resultData="";
     	if(bdDishJson.getResult().get(0).getName().equals("非菜")){
     		BDDishResponse bdDishResponse = new BDDishResponse();
@@ -333,6 +342,8 @@ public class BDImageClassifyRestController {
             resultData = JSON.toJSONString(bdDishResponse);
     	} else {
 			BDICRDishDO bdicrDishDO = new BDICRDishDO();
+			bdicrDishDO.setOpenId(openId);
+			bdicrDishDO.setNikeName(nickName);
 			bdicrDishDO.setLogId(String.valueOf(bdDishJson.getLog_id()));
 			bdicrDishDO.setResultNum(bdDishJson.getResult_num());
 			bdicrDishDO.setCalorie(bdDishJson.getResult().get(0).getCalorie());
