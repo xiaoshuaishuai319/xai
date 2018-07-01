@@ -8,10 +8,10 @@ public class HandTrackEnum {
 		if(label.equals("1")){
 			labelName="1";
 			return labelName;
-		}else if (label.equals("6")) {
+		}else if (label.equals("6")||label.equals("SIX")) {
 			labelName="6";
 			return labelName;
-		}else if (label.equals("8")) {
+		}else if (label.equals("8")||label.equals("EIGHT")) {
 			labelName="8";
 			return labelName;
 		}else if (label.equals("FIST")) {
@@ -46,7 +46,7 @@ public class HandTrackEnum {
 			return labelName;
 		}else{
 			 labelName =label;
-			 QQSendEmailUtil.send_email("优图手势未定义提醒", "接口识别的手势英文为："+label, "youngxiaoshuai@163.com");
+			 QQSendEmailUtil.send_email("优图手势未定义提醒", "接口识别的手势英文为："+label,AIConstant.EMAIL_ADDRESS);
 		    return labelName;
 		}
 	}
