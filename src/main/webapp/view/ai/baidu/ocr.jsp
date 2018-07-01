@@ -127,8 +127,12 @@ var prefix = "<%=basePath%>";
 						title : '识别的内容',
 						width:110,
 						formatter:function(value,row,index){
-							var values = value.substring(0,35)+"...";
-							return values;
+							if(null==value||value.length<35){
+								return value;
+							}else{
+								var values = value.substring(0,35)+"...";
+								return values;
+							}
 						}
 					},{
 						field : 'wordsResultNum',
