@@ -2,7 +2,7 @@
 # XAI 管理系统
 ### 微信小程序：[小帅一点资讯](https://gitee.com/xshuai/weixinxiaochengxu)后台服务项目
 ### 基于[bootdo](https://gitee.com/lcg0124/bootdo)更改的SpringMVC版本(基础功能已迁移)
-
+# 最新代码在码云:https://gitee.com/xshuai/xai
 # 项目代码结构简易说明
 ```
 src/main/java
